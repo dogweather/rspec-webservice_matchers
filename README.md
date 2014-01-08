@@ -1,29 +1,22 @@
 # Rspec::WebserviceMatchers
 
-This is simply the gem template. I'm currently factoring out my code into this new repo.
+I'm currently factoring out my code into this new repo. Check back around January 9.
 
-## Installation
+Here's the idea. This gem enables you to check a web app's HTTP configuration. For example, it's SSL certificate for correct configuration and expiration.
 
-Add this line to your application's Gemfile:
+Example
+-------
 
-    gem 'rspec-webservice_matchers'
+```Ruby
+require 'spec_helper'
 
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install rspec-webservice_matchers
-
-## Usage
-
-TODO: Write usage instructions here
-
-## Contributing
-
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+describe 'My app' do
+  it 'is configured for ssl' do
+    # New-style RSpec syntax
+    expect('www.myapp.com').to have_a_valid_cert
+    
+    # Old-style RSpec syntax
+    'www.weblaws.org'.should have_a_valid_cert
+  end
+end
+```
