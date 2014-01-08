@@ -1,6 +1,6 @@
 # Rspec::WebserviceMatchers
 
-TODO: Write a gem description
+This is simply the gem template. I'm currently factoring out my code into this new repo.
 
 ## Installation
 
