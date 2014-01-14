@@ -1,6 +1,6 @@
 # Rspec::WebserviceMatchers
 
-I'm currently factoring out my code into this new repo. Check back around January 9 for the code.
+I'm currently factoring out my code into this new repo. Check back around January 15 for the code.
 
 This gem enables you to black-box test a web app's server configuration. For example, its SSL certificate for correct configuration and expiration. It's a tool for doing Test Driven Devops. (I just made that up.)
 
