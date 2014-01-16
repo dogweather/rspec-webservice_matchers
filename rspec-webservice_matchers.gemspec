@@ -8,8 +8,8 @@ Gem::Specification.new do |spec|
   spec.version       = RSpec::WebserviceMatchers::VERSION
   spec.authors       = ["Robb Shecter"]
   spec.email         = ["robb@weblaws.org"]
-  spec.description   = %q{Match specific HTTP result codes and valid HTTPS configuration}
-  spec.summary       = %q{Handy matchers for testing web services}
+  spec.description   = %q{Black-box web app configuration testing}
+  spec.summary       = %q{Black-box web app configuration testing}
   spec.homepage      = "https://github.com/dogweather/rspec-webservice_matchers"
   spec.license       = "MIT"
 
@@ -21,5 +21,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
 
-  spec.add_runtime_dependency 'curb', '~> 0.8'
+  spec.add_runtime_dependency 'curb',  '~> 0.8'
+  spec.add_runtime_dependency 'rspec', '~> 3.0'
 end

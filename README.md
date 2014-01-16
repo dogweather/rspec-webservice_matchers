@@ -12,7 +12,11 @@ $ gem install rspec-webservice_matchers
 Example
 -------
 
-Currently, two matchers are implemented, `have_a_valid_cert` and `redirect_permanently_to`:
+Currently, three matchers are implemented: 
+
+* `have_a_valid_cert`
+* `redirect_permanently_to`
+* `enforce_https_everywhere` (See the [EFF site](https://www.eff.org/https-everywhere) for more info)
 
 ```Ruby
 require 'rspec/webservice_matchers'
@@ -24,6 +28,10 @@ describe 'My app' do
 
   it 'redirects to www' do
     expect('http://myapp.com').to redirect_permanently_to 'http://www.myapp.com/'
+  end
+
+  it 'forces visitors to use https' do
+    expect('myapp.com').to enforce_https_everywhere
   end
 end
 ```

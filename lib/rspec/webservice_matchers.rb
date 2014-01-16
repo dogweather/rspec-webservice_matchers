@@ -57,5 +57,20 @@ module RSpec
       end
     end    
 
+    RSpec::Matchers.define :enforce_https_everywhere do
+      match do |domain_name|
+        # TODO: Refactor this code. Submit as pull request to Curb.
+        result = Curl::Easy.http_head("http://#{domain_name}")
+        header_lines = result.head.split("\r\n")
+        header_lines.delete_at(0) # The first reponse header is already parsed.
+        header = {}
+        header_lines.each do |line|
+          key, value = line.split(': ')
+          header[key] = value
+        end
+        (result.response_code == 301) && (/https/ === header['Location'])
+      end
+    end    
+
   end
 end

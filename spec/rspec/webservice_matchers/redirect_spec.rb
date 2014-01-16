@@ -6,3 +6,10 @@ describe 'redirect_permanently_to' do
     expect('http://weblaws.org').to redirect_permanently_to('http://www.weblaws.org/')
   end
 end
+
+# See https://www.eff.org/https-everywhere
+describe 'enforce_https_everywhere' do
+  it 'passes when http requests are redirected to https urls' do
+    expect('eff.org').to enforce_https_everywhere
+  end
+end
