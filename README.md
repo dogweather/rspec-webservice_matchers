@@ -5,6 +5,13 @@ This gem enables you to black-box test a web app's server configuration. For exa
 TODO: Finish the Gem set up and register as a Gem.
 
 
+Installation
+------------
+```Shell
+$ gem install rspec-webservice_matchers
+```
+
+
 Example
 -------
 
