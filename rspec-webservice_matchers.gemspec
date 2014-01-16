@@ -5,12 +5,12 @@ require 'rspec/webservice_matchers/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "rspec-webservice_matchers"
-  spec.version       = Rspec::WebserviceMatchers::VERSION
+  spec.version       = RSpec::WebserviceMatchers::VERSION
   spec.authors       = ["Robb Shecter"]
   spec.email         = ["robb@weblaws.org"]
-  spec.description   = %q{TODO: Write a gem description}
-  spec.summary       = %q{TODO: Write a gem summary}
-  spec.homepage      = ""
+  spec.description   = %q{Match specific HTTP result codes and valid HTTPS configuration}
+  spec.summary       = %q{Handy matchers for testing web services}
+  spec.homepage      = "https://github.com/dogweather/rspec-webservice_matchers"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
