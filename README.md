@@ -24,7 +24,7 @@ describe 'My app' do
     expect('www.myapp.com').to have_a_valid_cert
     
     # Old-style RSpec syntax
-    'www.weblaws.org'.should have_a_valid_cert
+    'www.myapp.com'.should have_a_valid_cert
   end
 end
 ```
