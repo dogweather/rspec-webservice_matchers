@@ -2,7 +2,7 @@
 
 This gem enables you to black-box test a web app's server configuration. For example, whether its SSL certificate is correctly configured and not expired. It's a tool for doing **Test Driven Devops**. (I just made that up.)
 
-TODO: Finish the Gem set up and register as a Gem.
+TODO: Add matchers for HTTP result codes.
 
 
 Installation
