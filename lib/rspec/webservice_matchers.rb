@@ -33,6 +33,8 @@ module RSpec
 
 
     # RSpec Custom Matchers ###########################################
+    # See https://www.relishapp.com/rspec/rspec-expectations/v/3-0/docs/custom-matchers/define-matcher
+    
 
     RSpec::Matchers.define :have_a_valid_cert do
       match do |domain_name|
