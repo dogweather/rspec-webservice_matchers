@@ -14,17 +14,7 @@ module RSpec
       end
     end
 
-    #
-    # Custom RSpec matcher: have_a_valid_cert
-    #
-    RSpec::Matchers.define :have_a_valid_cert do
-      match do |domain_name|
-        RSpec::WebserviceMatchers.has_valid_ssl_cert?(domain_name)
-      end
-    end
-
-
-    # Would this matcher be helpful?
+    # Would this function be helpful?
 
     #
     # Return true if the domain serves content via SSL
@@ -40,6 +30,30 @@ module RSpec
     #     return false
     #   end
     # end
+
+
+    # RSpec Custom Matchers ###########################################
+
+    RSpec::Matchers.define :have_a_valid_cert do
+      match do |domain_name|
+        RSpec::WebserviceMatchers.has_valid_ssl_cert?(domain_name)
+      end
+    end
+
+    RSpec::Matchers.define :redirect_permanently_to do |expected|
+      match do |url|
+        # TODO: Refactor this code. Submit as pull request to Curb.
+        result = Curl::Easy.http_head(url)
+        header_lines = result.head.split("\r\n")
+        header_lines.delete_at(0) # The first reponse header is already parsed.
+        header = {}
+        header_lines.each do |line|
+          key, value = line.split(': ')
+          header[key] = value
+        end         
+        result.response_code == 301 && header['Location'] == expected
+      end
+    end    
 
   end
 end
