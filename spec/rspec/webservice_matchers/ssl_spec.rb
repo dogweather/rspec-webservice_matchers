@@ -15,3 +15,11 @@ describe 'have_a_valid_cert matcher' do
     }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
   end
 end
+
+
+# See https://www.eff.org/https-everywhere
+describe 'enforce_https_everywhere' do
+  it 'passes when http requests are redirected to valid https urls' do
+    expect('eff.org').to enforce_https_everywhere
+  end
+end

@@ -4,18 +4,23 @@ require 'curb'
 module RSpec
   module WebserviceMatchers
 
-    def self.has_valid_ssl_cert?(domain_name)
+    def self.has_valid_ssl_cert?(domain_name_or_url)
+      # Normalize the input: remove 'http(s)://' if it's there
+      if %r|^https?://(.+)$| === domain_name_or_url
+        domain_name_or_url = $1
+      end
+
+      # Test by seeing if Curl retrieves without complaining
       begin
-        Curl.get "https://#{domain_name}"  # Faster than Curl.head; not sure why.
+        Curl::Easy.http_head "https://#{domain_name_or_url}"  # Faster than Curl.head; not sure why.
         return true
       rescue Curl::Err::ConnectionFailedError, Curl::Err::SSLCACertificateError, Curl::Err::SSLPeerCertificateError
-        # Not serving SSL, expired, or incorrect domain name
+        # Not serving SSL, expired, or incorrect domain name in certificate
         return false
       end
     end
 
     # Would this function be helpful?
-
     #
     # Return true if the domain serves content via SSL
     # without checking certificate validity.
@@ -37,8 +42,8 @@ module RSpec
     
 
     RSpec::Matchers.define :have_a_valid_cert do
-      match do |domain_name|
-        RSpec::WebserviceMatchers.has_valid_ssl_cert?(domain_name)
+      match do |domain_name_or_url|
+        RSpec::WebserviceMatchers.has_valid_ssl_cert?(domain_name_or_url)
       end
     end
 
@@ -57,6 +62,10 @@ module RSpec
       end
     end    
 
+    # This is a high level matcher which checks three things:
+    # 1. Permanent redirect
+    # 2. to an https url
+    # 3. which is correctly configured
     RSpec::Matchers.define :enforce_https_everywhere do
       match do |domain_name|
         # TODO: Refactor this code. Submit as pull request to Curb.
@@ -68,7 +77,7 @@ module RSpec
           key, value = line.split(': ')
           header[key] = value
         end
-        (result.response_code == 301) && (/https/ === header['Location'])
+        (result.response_code == 301) && (/https/ === header['Location']) && (RSpec::WebserviceMatchers.has_valid_ssl_cert?(header['Location']))
       end
     end    
 
