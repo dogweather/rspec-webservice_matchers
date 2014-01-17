@@ -34,16 +34,9 @@ module RSpec
     # Pass successfully if we get a 301 to the place we intend.
     RSpec::Matchers.define :redirect_permanently_to do |expected|
       match do |url|
-        # TODO: Refactor this code. Submit as pull request to Curb.
-        result = Curl::Easy.http_head(url)
-        header_lines = result.head.split("\r\n")
-        header_lines.delete_at(0) # The first reponse header is already parsed.
-        header = {}
-        header_lines.each do |line|
-          key, value = line.split(': ')
-          header[key] = value
-        end         
-        result.response_code == 301 && header['Location'] == expected
+        result  = Curl::Easy.http_head(url)
+        headers = RSpec::WebserviceMatchers.parse_response_headers(result)
+        result.response_code == 301 && headers['Location'] == expected
       end
     end    
 
@@ -53,18 +46,29 @@ module RSpec
     # 3. which is correctly configured
     RSpec::Matchers.define :enforce_https_everywhere do
       match do |domain_name|
-        # TODO: Refactor this code. Submit as pull request to Curb.
-        result = Curl::Easy.http_head("http://#{domain_name}")
-        header_lines = result.head.split("\r\n")
-        header_lines.delete_at(0) # The first reponse header is already parsed.
-        header = {}
-        header_lines.each do |line|
-          key, value = line.split(': ')
-          header[key] = value
-        end
-        (result.response_code == 301) && (/https/ === header['Location']) && (RSpec::WebserviceMatchers.has_valid_ssl_cert?(header['Location']))
+        result  = Curl::Easy.http_head("http://#{domain_name}")
+        headers = RSpec::WebserviceMatchers.parse_response_headers(result)
+        new_url = headers['Location']
+        (result.response_code == 301) && (/https/ === new_url) && (RSpec::WebserviceMatchers.has_valid_ssl_cert?(new_url))
       end
-    end    
+    end   
+
+
+    private
+
+    # Return a hash of response headers from the
+    # given curl result.
+    # TODO: Submit as a pull request to the Curb gem.
+    def self.parse_response_headers(curl_result)
+      header_lines = curl_result.head.split("\r\n")
+      header_lines.delete_at(0) # The first reponse header is in another format and already parsed.
+      response_headers = {}
+      header_lines.each do |line|
+        key, value = line.split(': ')
+        response_headers[key] = value
+      end
+      return response_headers
+    end
 
   end
 end
