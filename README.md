@@ -8,15 +8,17 @@ Installation
 $ gem install rspec-webservice_matchers
 ```
 
-
-Example
--------
-
-Currently, three matchers are implemented: 
+What You Get
+------------
+Three new RSpec matchers:
 
 * `have_a_valid_cert`
 * `redirect_permanently_to`
 * `enforce_https_everywhere` (See the [EFF site](https://www.eff.org/https-everywhere) for more info)
+
+
+Example
+-------
 
 ```Ruby
 require 'rspec/webservice_matchers'
