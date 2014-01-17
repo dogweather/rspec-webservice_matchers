@@ -20,26 +20,9 @@ module RSpec
       end
     end
 
-    # Would this function be helpful?
-    #
-    # Return true if the domain serves content via SSL
-    # without checking certificate validity.
-    #
-    # def self.supports_ssl?(domain_name)
-    #   begin
-    #     has_valid_ssl_cert?(domain_name)
-    #     # Cert may not be valid, but content IS
-    #     # being served via https.
-    #     return true
-    #   rescue Curl::Err::ConnectionFailedError
-    #     return false
-    #   end
-    # end
-
 
     # RSpec Custom Matchers ###########################################
-    # See https://www.relishapp.com/rspec/rspec-expectations/v/3-0/docs/custom-matchers/define-matcher
-    
+    # See https://www.relishapp.com/rspec/rspec-expectations/v/2-3/docs/custom-matchers/define-matcher
 
     # Test whether https is correctly implemented
     RSpec::Matchers.define :have_a_valid_cert do
