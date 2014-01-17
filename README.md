@@ -47,3 +47,4 @@ TODO
 Related Projects
 ----------------
 * [serverspec](http://serverspec.org)
+* [HTTP Assertions](https://github.com/dogweather/HTTP-Assertions)
