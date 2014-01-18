@@ -53,8 +53,29 @@ module RSpec
       end
     end   
 
+    # Pass when a URL returns the expected status code
+    # Codes are defined in http://www.rfc-editor.org/rfc/rfc2616.txt
+    RSpec::Matchers.define :be_status do |expected|
+      match do |url_or_domain_name|
+        url    = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
+        result = Curl::Easy.http_head(url)
+        (result.response_code == expected.to_i)
+      end
+    end
+
 
     private
+
+    # Ensure that the given string is a URL,
+    # making it into one if necessary.
+    def self.make_url(url_or_domain_name)
+      unless %r|^https?://| === url_or_domain_name
+        "http://#{url_or_domain_name}"
+      else
+        url_or_domain_name
+      end
+    end
+
 
     # Return a hash of response headers from the
     # given curl result.
