@@ -16,7 +16,8 @@ What You Get
 These new RSpec matchers:
 
 Matcher                        | Notes 
-**be_status**
+---                            | ---
+**be_status**                  |  
 **have_a_valid_cert**          | Uses lib-curl to test validity
 **enforce_https_everywhere**   | See [EFF](https://www.eff.org/https-everywhere)
 **redirect_permanently_to**    | Allows 301
