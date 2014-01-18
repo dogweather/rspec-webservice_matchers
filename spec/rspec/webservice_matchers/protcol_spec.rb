@@ -1,5 +1,7 @@
 require 'rspec/webservice_matchers'
 
+# TODO: set up a test server or mocks for these.
+#
 describe 'status_code' do
   describe 'passes when the server returns the expected value' do
     it 'can check 200 for successful resource requests' do
@@ -11,7 +13,6 @@ describe 'status_code' do
     end
 
     it 'can check 503 for the Service Unavailable status' do
-      # TODO: set up a test server or a mock
       'http://www.weblaws.org/texas/laws/tex._spec._dist._local_laws_code_section_1011.202_tax_to_pay_general_obligation_bonds'.should be_status 503
     end
   end
