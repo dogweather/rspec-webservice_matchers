@@ -15,8 +15,8 @@ What You Get
 ------------
 These new RSpec matchers:
 
-Matcher                        | Notes 
----                            | ---
+                               | Notes
+-------------------------------|------------------------------------------------
 **be_status**                  |  
 **have_a_valid_cert**          | Uses lib-curl to test validity
 **enforce_https_everywhere**   | See [EFF](https://www.eff.org/https-everywhere)
