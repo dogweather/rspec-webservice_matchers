@@ -51,7 +51,7 @@ end
 
 TODO 
 ----
-* Matchers for more high-level cases, such as the two kinds of temp. redirect
+* Matchers for more high-level cases
 * Matchers for JSON schema 
 * More matchers refactored from [weblaws.org](http://www.weblaws.org/) code
 
