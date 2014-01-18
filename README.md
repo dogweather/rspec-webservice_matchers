@@ -44,3 +44,7 @@ TODO
 * Matchers for more HTTP result codes. I'm adding these in by refactoring code out of my [oregonlaws.org](http://www.oregonlaws.org/) and [weblaws.org](http://www.weblaws.org/) projects.
 * Matchers for JSON schema 
 
+Related Projects
+----------------
+* [serverspec](http://serverspec.org)
+* [HTTP Assertions](https://github.com/dogweather/HTTP-Assertions)
