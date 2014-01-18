@@ -2,6 +2,9 @@
 
 This [gem](https://rubygems.org/gems/rspec-webservice_matchers) enables you to black-box test a web app's server configuration. For example, whether its SSL certificate is correctly configured and not expired. It's a tool for doing **Test Driven Devops**. (I just made that up.)
 
+This library takes a very minimalist approach: by simply adding new RSpec matchers,
+you can use your own RSpec writing style; no new DSL to learn.
+
 Installation
 ------------
 ```Shell
@@ -10,11 +13,11 @@ $ gem install rspec-webservice_matchers
 
 What You Get
 ------------
-Three new RSpec matchers:
+These new RSpec matchers:
 
 * `be_status`
 * `have_a_valid_cert`
-* `enforce_https_everywhere` (See [EFF](https://www.eff.org/https-everywhere))
+* `enforce_https_everywhere`  (See [EFF](https://www.eff.org/https-everywhere))
 * `redirect_permanently_to`
 
 
@@ -25,12 +28,9 @@ Example
 require 'rspec/webservice_matchers'
 
 describe 'My app' do 
-  it 'has a working home page' do
-    expect('www.myapp.com').to be_status 200
-  end
-
-  it 'is configured for ssl' do
-    expect('www.myapp.com').to have_a_valid_cert
+  context 'www.myapp.com' do
+    it { should be_status 200 }
+    it { should have_a_valid_cert }
   end
 
   it 'redirects to www' do
@@ -46,10 +46,13 @@ end
 
 TODO 
 ----
-* Matchers for more HTTP result codes. I'm adding these in by refactoring code out of my [oregonlaws.org](http://www.oregonlaws.org/) and [weblaws.org](http://www.weblaws.org/) projects.
+* Matchers for more high-level cases, such as the two kinds of temp. redirect
 * Matchers for JSON schema 
+* More matchers refactored from [weblaws.org](http://www.weblaws.org/) code
 
 Related Projects
 ----------------
 * [serverspec](http://serverspec.org)
 * [HTTP Assertions](https://github.com/dogweather/HTTP-Assertions)
+
+
