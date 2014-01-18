@@ -2,8 +2,8 @@
 
 This [gem](https://rubygems.org/gems/rspec-webservice_matchers) enables you to black-box test a web app's server configuration. For example, whether its SSL certificate is correctly configured and not expired. It's a tool for doing **Test Driven Devops**. (I just made that up.)
 
-This library takes a very minimalist approach: by simply adding new RSpec matchers,
-you can use your own RSpec writing style; no new DSL to learn.
+This library takes a very minimalist approach: it simply adds new RSpec matchers,
+and so you can use your own RSpec writing style; there's no new DSL to learn.
 
 Installation
 ------------
@@ -16,9 +16,14 @@ What You Get
 These new RSpec matchers:
 
 * `be_status`
-* `have_a_valid_cert`
-* `enforce_https_everywhere`  (See [EFF](https://www.eff.org/https-everywhere))
-* `redirect_permanently_to`
+* `have_a_valid_cert`  
+   Uses lib-curl to test validity
+* `enforce_https_everywhere`  
+   See [EFF](https://www.eff.org/https-everywhere)
+* `redirect_permanently_to`    
+   Allows 301
+* `redirect_temporarily_to`  
+   Allows 302 or 307
 
 
 Example
@@ -46,7 +51,7 @@ end
 
 TODO 
 ----
-* Matchers for more high-level cases, such as the two kinds of temp. redirect
+* Matchers for more high-level cases
 * Matchers for JSON schema 
 * More matchers refactored from [weblaws.org](http://www.weblaws.org/) code
 
