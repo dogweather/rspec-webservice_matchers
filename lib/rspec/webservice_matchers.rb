@@ -40,6 +40,15 @@ module RSpec
       end
     end    
 
+    # Pass successfully if we get a 302 or 307 to the place we intend.
+    RSpec::Matchers.define :redirect_temporarily_to do |expected|
+      match do |url|
+        result  = Curl::Easy.http_head(url)
+        headers = RSpec::WebserviceMatchers.parse_response_headers(result)
+        [302, 307].include?(result.response_code) && headers['Location'] == expected
+      end
+    end    
+
     # This is a high level matcher which checks three things:
     # 1. Permanent redirect
     # 2. to an https url

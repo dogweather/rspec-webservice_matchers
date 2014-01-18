@@ -16,9 +16,14 @@ What You Get
 These new RSpec matchers:
 
 * `be_status`
-* `have_a_valid_cert`
-* `enforce_https_everywhere`  (See [EFF](https://www.eff.org/https-everywhere))
-* `redirect_permanently_to`
+* `have_a_valid_cert`  
+   Uses lib-curl to test validity
+* `enforce_https_everywhere`  
+   See [EFF](https://www.eff.org/https-everywhere)
+* `redirect_permanently_to`    
+   Allows 301
+* `redirect_temporarily_to`  
+   Allows 302 or 307
 
 
 Example
