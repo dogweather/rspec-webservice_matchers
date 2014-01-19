@@ -68,15 +68,17 @@ module RSpec
       match do |url_or_domain_name|
         url    = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
         result = Curl::Easy.http_head(url)
-        (result.response_code == expected.to_i)
+        result.response_code == expected.to_i
       end
     end
 
+    # Pass when the response code is 200, following redirects
+    # if necessary.
     RSpec::Matchers.define :be_up do
       match do |url_or_domain_name|        
         url    = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
         result = Curl::Easy.http_head(url) { |curl| curl.follow_location = true }
-        (result.response_code == 200)
+        result.response_code == 200
       end
     end
 
