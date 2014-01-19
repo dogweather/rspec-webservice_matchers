@@ -16,3 +16,14 @@ describe 'status_code' do
     'http://www.weblaws.org/texas/laws/tex._spec._dist._local_laws_code_section_1011.202_tax_to_pay_general_obligation_bonds'.should be_status 503
   end
 end
+
+
+describe 'be_up' do
+  it 'follows redirects when necessary' do
+    'weblaws.org'.should be_up
+  end
+
+  it 'can also handle a simple 200' do
+    'http://www.rfc-editor.org/rfc/rfc2616.txt'.should be_up
+  end
+end

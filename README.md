@@ -18,6 +18,7 @@ These new RSpec matchers:
                                | Notes
 -------------------------------|------------------------------------------------
 **be_status**                  |  
+**be_up**                      | Follows redirects if necessary and checks for 200
 **have_a_valid_cert**          | Uses [lib-curl](http://curl.haxx.se/libcurl/) via [Curb](https://github.com/taf2/curb) to test validity
 **enforce_https_everywhere**   | See the [EFF project](https://www.eff.org/https-everywhere)
 **redirect_permanently_to**    | Allows 301
@@ -32,8 +33,12 @@ require 'rspec/webservice_matchers'
 
 describe 'My app' do 
   context 'www.myapp.com' do
-    it { should be_status 200 }
+    it { should be_up }
     it { should have_a_valid_cert }
+  end
+
+  it 'serves the about page without redirects' do
+    expect('http://www.myapp.com/about').to be_status 200
   end
 
   it 'redirects to www' do
