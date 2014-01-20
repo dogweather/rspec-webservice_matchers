@@ -28,6 +28,8 @@ These new RSpec matchers:
 Example
 -------
 
+Here's an example which uses them all:
+
 ```Ruby
 require 'rspec/webservice_matchers'
 
