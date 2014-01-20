@@ -37,11 +37,11 @@ describe 'My app' do
     it { should have_a_valid_cert }
   end
 
-  it 'serves the about page without redirects' do
+  it 'serves the "about" page without redirecting' do
     expect('http://www.myapp.com/about').to be_status 200
   end
 
-  it 'redirects to www' do
+  it 'only serves via www' do
     expect('http://myapp.com').to redirect_permanently_to 'http://www.myapp.com/'
   end
 
