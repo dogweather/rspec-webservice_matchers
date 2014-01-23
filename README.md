@@ -23,8 +23,8 @@ These new RSpec matchers:
 **be_up**                      | Follows redirects if necessary and checks for 200
 **have_a_valid_cert**          | Uses [lib-curl](http://curl.haxx.se/libcurl/) via [Curb](https://github.com/taf2/curb) to test validity
 **enforce_https_everywhere**   | See the [EFF project](https://www.eff.org/https-everywhere)
-**redirect_permanently_to**    | Allows 301
-**redirect_temporarily_to**    | Allows 302 or 307
+**redirect_permanently_to**    | Checks for 301
+**redirect_temporarily_to**    | Checks for 302 or 307
 
 
 Example
