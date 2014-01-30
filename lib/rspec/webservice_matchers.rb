@@ -14,8 +14,8 @@ module RSpec
 
       # Test by seeing if Curl retrieves without complaining
       begin
-        conn = Faraday.new(:url => "https://#{domain_name_or_url}")
-        response = conn.head
+        conn = Faraday.new
+        response = conn.head("https://#{domain_name_or_url}")
         return true
       rescue
         # Not serving SSL, expired, or incorrect domain name in certificate
@@ -37,18 +37,17 @@ module RSpec
     # Pass successfully if we get a 301 to the place we intend.
     RSpec::Matchers.define :redirect_permanently_to do |expected|
       match do |url|
-        conn = Faraday.new(:url => url)
-        response = conn.head
-        response.status == 301 && response.headers['Location'] == expected
+        response = Faraday.new.head(url)
+        # binding.pry
+        response.status == 301 && response.headers['location'] == expected
       end
     end    
 
     # Pass successfully if we get a 302 or 307 to the place we intend.
     RSpec::Matchers.define :redirect_temporarily_to do |expected|
       match do |url|
-        conn = Faraday.new(:url => url)
-        response = conn.head
-        [302, 307].include?(response.status) && response.headers['Location'] == expected
+        response = Faraday.new.head(url)
+        [302, 307].include?(response.status) && response.headers['location'] == expected
       end
     end    
 
@@ -58,9 +57,8 @@ module RSpec
     # 3. which is correctly configured
     RSpec::Matchers.define :enforce_https_everywhere do
       match do |domain_name|
-        conn     = Faraday.new(:url => "http://#{domain_name}")
-        response = conn.head
-        new_url  = response.headers['Location']
+        response = Faraday.new.head("http://#{domain_name}")
+        new_url  = response.headers['location']
         (response.status == 301) && (/https/ === new_url) && (RSpec::WebserviceMatchers.has_valid_ssl_cert?(new_url))
       end
     end   
@@ -70,8 +68,7 @@ module RSpec
     RSpec::Matchers.define :be_status do |expected|
       match do |url_or_domain_name|
         url      = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
-        conn     = Faraday.new(:url => url)
-        response = conn.head
+        response = Faraday.new.head(url)
         response.status == expected
       end
     end
@@ -81,11 +78,11 @@ module RSpec
     RSpec::Matchers.define :be_up do
       match do |url_or_domain_name|        
         url  = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
-        conn = Faraday.new(url) do |c|
+        conn = Faraday.new do |c|
           c.use FaradayMiddleware::FollowRedirects, limit: 5
           c.adapter :net_http
         end
-        response = conn.head
+        response = conn.head(url)
         response.status == 200
       end
     end

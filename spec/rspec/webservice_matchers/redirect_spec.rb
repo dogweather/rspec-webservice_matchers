@@ -1,11 +1,13 @@
 require 'rspec/webservice_matchers'
 
 #
-# TODO: Set up a server for these. (Or a mock?)
+# TODO: Set up a server for these. (Or a mock?) 
+#       Faraday supports testing: we can use that now.
 #
 describe 'redirect_permanently_to' do
   it 'passes when receiving a 301 to the given URL' do
     expect('http://weblaws.org').to redirect_permanently_to('http://www.weblaws.org/')
+    expect('http://www.getquisitive.com/press-kit/').to redirect_permanently_to 'http://getquisitive.com/press-kit/'
   end
 end
 
