@@ -3,6 +3,7 @@ require 'rspec/webservice_matchers'
 
 #
 # TODO: set up mocks or VCR for the rest of these.
+# SEE:  http://www.slideshare.net/kjbuckley/testing-http-calls-with-webmock-and-vcr
 #
 
 WebMock.stub_request :any, 'http://www.website.com/a/page.txt'
