@@ -1,16 +1,19 @@
 require 'rspec/webservice_matchers'
 
+# VCR may be the tool to use for this. Can it handle https? Would that work?
+
+
 describe 'have_a_valid_cert matcher' do
   it 'passes when SSL is properly configured' do
     # EFF created the HTTPS Everywhere movement
-    # TODO: set up a test server for this.
+    # TODO: set up a test server for this. (?)
     expect('www.eff.org').to have_a_valid_cert
   end  
 
   it 'fails if the server is not serving SSL at all' do
     expect {
       # www.psu.edu only supports HTTP, port 80.
-      # TODO: set up a test server for this.
+      # TODO: set up a test server for this. (?)
       expect('www.psu.edu').to have_a_valid_cert    
     }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
   end
