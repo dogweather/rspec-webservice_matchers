@@ -1,5 +1,6 @@
 require 'rspec/webservice_matchers/version'
-require 'curb'
+require 'faraday'
+require 'pry'
 
 module RSpec
   module WebserviceMatchers
@@ -12,9 +13,10 @@ module RSpec
 
       # Test by seeing if Curl retrieves without complaining
       begin
-        Curl::Easy.http_head "https://#{domain_name_or_url}"
+        conn = Faraday.new(:url => "https://#{domain_name_or_url}")
+        response = conn.head
         return true
-      rescue Curl::Err::ConnectionFailedError, Curl::Err::SSLCACertificateError, Curl::Err::SSLPeerCertificateError
+      rescue
         # Not serving SSL, expired, or incorrect domain name in certificate
         return false
       end
@@ -34,18 +36,18 @@ module RSpec
     # Pass successfully if we get a 301 to the place we intend.
     RSpec::Matchers.define :redirect_permanently_to do |expected|
       match do |url|
-        result  = Curl::Easy.http_head(url)
-        headers = RSpec::WebserviceMatchers.parse_response_headers(result)
-        result.response_code == 301 && headers['Location'] == expected
+        conn = Faraday.new(:url => url)
+        response = conn.head
+        response.status == 301 && response.headers['Location'] == expected
       end
     end    
 
     # Pass successfully if we get a 302 or 307 to the place we intend.
     RSpec::Matchers.define :redirect_temporarily_to do |expected|
       match do |url|
-        result  = Curl::Easy.http_head(url)
-        headers = RSpec::WebserviceMatchers.parse_response_headers(result)
-        [302, 307].include?(result.response_code) && headers['Location'] == expected
+        conn = Faraday.new(:url => url)
+        response = conn.head
+        [302, 307].include?(response.status) && response.headers['Location'] == expected
       end
     end    
 
@@ -55,10 +57,10 @@ module RSpec
     # 3. which is correctly configured
     RSpec::Matchers.define :enforce_https_everywhere do
       match do |domain_name|
-        result  = Curl::Easy.http_head("http://#{domain_name}")
-        headers = RSpec::WebserviceMatchers.parse_response_headers(result)
-        new_url = headers['Location']
-        (result.response_code == 301) && (/https/ === new_url) && (RSpec::WebserviceMatchers.has_valid_ssl_cert?(new_url))
+        conn     = Faraday.new(:url => "http://#{domain_name}")
+        response = conn.head
+        new_url  = response.headers['Location']
+        (response.status == 301) && (/https/ === new_url) && (RSpec::WebserviceMatchers.has_valid_ssl_cert?(new_url))
       end
     end   
 
@@ -66,21 +68,22 @@ module RSpec
     # Codes are defined in http://www.rfc-editor.org/rfc/rfc2616.txt
     RSpec::Matchers.define :be_status do |expected|
       match do |url_or_domain_name|
-        url    = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
-        result = Curl::Easy.http_head(url)
-        result.response_code == expected.to_i
+        url      = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
+        conn     = Faraday.new(:url => url)
+        response = conn.head
+        response.status == expected.to_i
       end
     end
 
     # Pass when the response code is 200, following redirects
     # if necessary.
-    RSpec::Matchers.define :be_up do
-      match do |url_or_domain_name|        
-        url    = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
-        result = Curl::Easy.http_head(url) { |curl| curl.follow_location = true }
-        result.response_code == 200
-      end
-    end
+    # RSpec::Matchers.define :be_up do
+    #   match do |url_or_domain_name|        
+    #     url    = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
+    #     result = Curl::Easy.http_head(url) { |curl| curl.follow_location = true }
+    #     result.response_code == 200
+    #   end
+    # end
 
 
     private
@@ -93,21 +96,6 @@ module RSpec
       else
         url_or_domain_name
       end
-    end
-
-
-    # Return a hash of response headers from the
-    # given curl result.
-    # TODO: Submit as a pull request to the Curb gem.
-    def self.parse_response_headers(curl_result)
-      header_lines = curl_result.head.split("\r\n")
-      header_lines.delete_at(0) # The first reponse header is in another format and already parsed.
-      response_headers = {}
-      header_lines.each do |line|
-        key, value = line.split(': ')
-        response_headers[key] = value
-      end
-      return response_headers
     end
 
   end

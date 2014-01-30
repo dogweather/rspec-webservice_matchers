@@ -18,12 +18,12 @@ describe 'status_code' do
 end
 
 
-describe 'be_up' do
-  it 'follows redirects when necessary' do
-    'weblaws.org'.should be_up
-  end
+# describe 'be_up' do
+#   it 'follows redirects when necessary' do
+#     'weblaws.org'.should be_up
+#   end
 
-  it 'can also handle a simple 200' do
-    'http://www.rfc-editor.org/rfc/rfc2616.txt'.should be_up
-  end
-end
+#   it 'can also handle a simple 200' do
+#     'http://www.rfc-editor.org/rfc/rfc2616.txt'.should be_up
+#   end
+# end
