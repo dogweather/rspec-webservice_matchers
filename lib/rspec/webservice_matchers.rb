@@ -1,5 +1,6 @@
 require 'rspec/webservice_matchers/version'
 require 'faraday'
+require 'faraday_middleware'
 require 'pry'
 
 module RSpec
@@ -71,19 +72,23 @@ module RSpec
         url      = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
         conn     = Faraday.new(:url => url)
         response = conn.head
-        response.status == expected.to_i
+        response.status == expected
       end
     end
 
-    # Pass when the response code is 200, following redirects
-    # if necessary.
-    # RSpec::Matchers.define :be_up do
-    #   match do |url_or_domain_name|        
-    #     url    = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
-    #     result = Curl::Easy.http_head(url) { |curl| curl.follow_location = true }
-    #     result.response_code == 200
-    #   end
-    # end
+    #Pass when the response code is 200, following redirects
+    #if necessary.
+    RSpec::Matchers.define :be_up do
+      match do |url_or_domain_name|        
+        url  = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
+        conn = Faraday.new(url) do |c|
+          c.use FaradayMiddleware::FollowRedirects, limit: 5
+          c.adapter :net_http
+        end
+        response = conn.head
+        response.status == 200
+      end
+    end
 
 
     private
