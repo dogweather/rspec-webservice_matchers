@@ -1,7 +1,6 @@
 require 'rspec/webservice_matchers/version'
 require 'faraday'
 require 'faraday_middleware'
-require 'pry'
 
 # Seconds
 TIMEOUT = 5 
@@ -42,7 +41,6 @@ module RSpec
     RSpec::Matchers.define :redirect_permanently_to do |expected|
       match do |url|
         response = RSpec::WebserviceMatchers.connection.head(url)
-        # binding.pry
         response.status == 301 && response.headers['location'] == expected
       end
     end
