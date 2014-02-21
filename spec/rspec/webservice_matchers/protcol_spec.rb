@@ -21,6 +21,10 @@ describe 'status_code' do
     'www.website.com'.should be_status 200
   end
 
+  it 'accepts status code in text form too' do
+    'www.website.com'.should be_status '200'
+  end
+
   it 'can check 503 for the Service Unavailable status' do
     'http://www.weblaws.org/texas/laws/tex._spec._dist._local_laws_code_section_1011.202_tax_to_pay_general_obligation_bonds'.should be_status 503
   end
