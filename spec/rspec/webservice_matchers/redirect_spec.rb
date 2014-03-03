@@ -10,7 +10,12 @@ describe 'redirect_permanently_to' do
     expect('http://weblaws.org').to redirect_permanently_to('http://www.weblaws.org/')
     expect('http://www.getquisitive.com/press-kit/').to redirect_permanently_to 'http://getquisitive.com/press-kit/'
   end
+
+  it 'handles domain names gracefully' do
+    expect('weblaws.org').to redirect_permanently_to('www.weblaws.org/')
+  end
 end
+
 
 describe 'redirect_temporarily_to' do
   it 'passes when it gets a 302' do

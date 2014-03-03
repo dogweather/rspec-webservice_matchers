@@ -39,9 +39,9 @@ module RSpec
 
     # Pass successfully if we get a 301 to the place we intend.
     RSpec::Matchers.define :redirect_permanently_to do |expected|
-      match do |url|
-        response = RSpec::WebserviceMatchers.connection.head(url)
-        response.status == 301 && response.headers['location'] == expected
+      match do |url_or_domain_name|
+        response = RSpec::WebserviceMatchers.connection.head(RSpec::WebserviceMatchers.make_url url_or_domain_name)
+        response.status == 301 && response.headers['location'] == RSpec::WebserviceMatchers.make_url(expected)
       end
     end
 
