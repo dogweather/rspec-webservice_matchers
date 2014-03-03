@@ -48,8 +48,8 @@ module RSpec
     # Pass successfully if we get a 302 or 307 to the place we intend.
     RSpec::Matchers.define :redirect_temporarily_to do |expected|
       match do |url|
-        response = RSpec::WebserviceMatchers.connection.head(url)
-        [302, 307].include?(response.status) && response.headers['location'] == expected
+        response = RSpec::WebserviceMatchers.connection.head(RSpec::WebserviceMatchers.make_url(url))
+        [302, 307].include?(response.status) && response.headers['location'] == RSpec::WebserviceMatchers.make_url(expected)
       end
     end
 

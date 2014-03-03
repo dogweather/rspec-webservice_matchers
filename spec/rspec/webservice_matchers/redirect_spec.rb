@@ -17,5 +17,9 @@ describe 'redirect_temporarily_to' do
     'http://www.oregonlaws.org/cms/about_us'.should redirect_temporarily_to 'http://www.weblaws.org/cms/about_us'
   end
 
+  it 'handles domain names gracefully' do
+    'www.oregonlaws.org/cms/about_us'.should redirect_temporarily_to 'www.weblaws.org/cms/about_us'
+  end
+
   it 'passes when it gets a 307'
 end
