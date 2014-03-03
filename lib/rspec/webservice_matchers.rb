@@ -41,7 +41,11 @@ module RSpec
     RSpec::Matchers.define :redirect_permanently_to do |expected|
       match do |url_or_domain_name|
         response = RSpec::WebserviceMatchers.connection.head(RSpec::WebserviceMatchers.make_url url_or_domain_name)
-        response.status == 301 && response.headers['location'] == RSpec::WebserviceMatchers.make_url(expected)
+        expected = RSpec::WebserviceMatchers.make_url(expected)
+        actual   = response.headers['location']
+        status   = response.status
+
+        (status == 301) && (%r|#{expected}/?| === actual)
       end
     end
 
@@ -49,7 +53,11 @@ module RSpec
     RSpec::Matchers.define :redirect_temporarily_to do |expected|
       match do |url|
         response = RSpec::WebserviceMatchers.connection.head(RSpec::WebserviceMatchers.make_url(url))
-        [302, 307].include?(response.status) && response.headers['location'] == RSpec::WebserviceMatchers.make_url(expected)
+        expected = RSpec::WebserviceMatchers.make_url(expected)
+        actual   = response.headers['location']
+        status   = response.status
+
+        [302, 307].include?(status) && (%r|#{expected}/?| === actual)
       end
     end
 
