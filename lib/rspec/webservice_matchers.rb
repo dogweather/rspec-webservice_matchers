@@ -88,12 +88,7 @@ module RSpec
     RSpec::Matchers.define :be_up do
       match do |url_or_domain_name|
         url  = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
-        conn = Faraday.new do |c|
-          c.options[:timeout] = TIMEOUT
-          c.options[:open_timeout] = TIMEOUT
-          c.use FaradayMiddleware::FollowRedirects, limit: 5
-          c.adapter :net_http
-        end
+        conn = RSpec::WebserviceMatchers.connection(follow: true)
         response = conn.head(url)
         response.status == 200
       end
@@ -102,10 +97,13 @@ module RSpec
 
     private
 
-    def self.connection
+    def self.connection(follow: false)
       Faraday.new do |c|
         c.options[:timeout] = TIMEOUT
         c.options[:open_timeout] = TIMEOUT
+        if follow
+          c.use FaradayMiddleware::FollowRedirects, limit: 4          
+        end
         c.adapter :net_http
       end      
     end
