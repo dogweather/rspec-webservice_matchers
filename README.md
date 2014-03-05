@@ -55,13 +55,6 @@ describe 'My app' do
 end
 ```
 
-
-TODO 
-----
-* Matchers for more high-level cases
-* Matchers for JSON schema 
-* More matchers refactored from [weblaws.org](http://www.weblaws.org/) code
-
 Related Projects
 ----------------
 * [serverspec](http://serverspec.org)
