@@ -58,6 +58,6 @@ end
 Related Projects
 ----------------
 * [serverspec](http://serverspec.org)
-* [HTTP Assertions](https://github.com/dogweather/HTTP-Assertions)
+* [HTTP Assertions](https://github.com/dogweather/HTTP-Assertions): A precusor to this library. Written in the older test case / assert style.
 
 
