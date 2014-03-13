@@ -26,6 +26,14 @@ module RSpec
       end
     end
 
+    
+    def self.is_up(url_or_domain_name)
+      url  = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
+      conn = RSpec::WebserviceMatchers.connection(follow: true)
+      response = conn.head(url)
+      response.status == 200
+    end
+
 
     # RSpec Custom Matchers ###########################################
     # See https://www.relishapp.com/rspec/rspec-expectations/v/2-3/docs/custom-matchers/define-matcher
@@ -87,10 +95,7 @@ module RSpec
     # if necessary.
     RSpec::Matchers.define :be_up do
       match do |url_or_domain_name|
-        url  = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
-        conn = RSpec::WebserviceMatchers.connection(follow: true)
-        response = conn.head(url)
-        response.status == 200
+        RSpec::WebserviceMatchers.is_up(url_or_domain_name)
       end
     end
 
