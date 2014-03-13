@@ -26,8 +26,9 @@ module RSpec
       end
     end
 
-    
-    def self.is_up(url_or_domain_name)
+    # Return true if the given page has status 200,
+    # and follow a few redirects if necessary.
+    def self.up?(url_or_domain_name)
       url  = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
       conn = RSpec::WebserviceMatchers.connection(follow: true)
       response = conn.head(url)
@@ -95,7 +96,7 @@ module RSpec
     # if necessary.
     RSpec::Matchers.define :be_up do
       match do |url_or_domain_name|
-        RSpec::WebserviceMatchers.is_up(url_or_domain_name)
+        RSpec::WebserviceMatchers.up?(url_or_domain_name)
       end
     end
 
