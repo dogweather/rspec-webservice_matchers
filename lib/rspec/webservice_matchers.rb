@@ -88,7 +88,10 @@ module RSpec
       match do |url_or_domain_name|
         url      = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
         response = RSpec::WebserviceMatchers.connection.head(url)
-        response.status == expected.to_i
+        actual   = response.status
+        expected = expected.to_i
+
+        actual == expected
       end
     end
 
