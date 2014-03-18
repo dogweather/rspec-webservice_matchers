@@ -26,7 +26,9 @@ describe 'redirect_temporarily_to' do
     'http://temp-redirector.org'.should redirect_temporarily_to 'http://a-page.com/a/page.txt'
   end
 
-  # TODO: Set up the mock server and test these
-  it 'handles domain names gracefully'
+  it 'handles domain names gracefully' do
+    'temp-redirector.org'.should redirect_temporarily_to 'a-page.com/a/page.txt'
+  end 
+
   it 'passes when it gets a 307'
 end
