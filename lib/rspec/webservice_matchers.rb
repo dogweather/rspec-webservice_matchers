@@ -66,24 +66,46 @@ module RSpec
       failure_message_for_should do
         error_message
       end
-
-      failure_message_for_should_not do
-        error_message
-      end
     end
 
 
     # Pass successfully if we get a 301 to the place we intend.
     RSpec::Matchers.define :redirect_permanently_to do |expected|
-      match do |url_or_domain_name|
-        response = RSpec::WebserviceMatchers.connection.head(RSpec::WebserviceMatchers.make_url url_or_domain_name)
-        expected = RSpec::WebserviceMatchers.make_url(expected)
-        actual   = response.headers['location']
-        status   = response.status
+      error_message = actual_status = actual_location = nil
 
-        (status == 301) && (%r|#{expected}/?| === actual)
+      match do |url_or_domain_name|
+        begin
+          response = RSpec::WebserviceMatchers.connection.head(RSpec::WebserviceMatchers.make_url url_or_domain_name)
+          expected = RSpec::WebserviceMatchers.make_url(expected)
+          actual_location = response.headers['location']
+          actual_status   = response.status
+
+          (actual_status == 301) && (%r|#{expected}/?| === actual_location)
+        rescue Exception => e
+          error_message = e.message
+          false  
+        end
+      end
+
+      failure_message_for_should do
+        if ! error_message.nil?
+          error_message
+        else
+          mesgs = []
+          if [302, 307].include? actual_status
+            mesgs << "received a temporary redirect, status #{actual_status}"
+          end
+          if ! (%r|#{expected}/?| === actual_location)
+            mesgs << "location was given as #{actual_location}"
+          end
+          if ! [301, 302, 307].include? actual_status
+            mesgs << "not a redirect: received status #{actual_status}"
+          end
+          mesgs.join('; ').capitalize
+        end
       end
     end
+
 
     # Pass successfully if we get a 302 or 307 to the place we intend.
     RSpec::Matchers.define :redirect_temporarily_to do |expected|
@@ -122,7 +144,6 @@ module RSpec
           false
         end
       end
-
 
       # Create a compound error message listing all of the
       # relevant actual values received.
