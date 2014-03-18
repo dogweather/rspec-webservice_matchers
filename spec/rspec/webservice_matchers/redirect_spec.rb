@@ -14,6 +14,12 @@ describe 'redirect_permanently_to' do
   it 'handles missing final slash' do
     expect('perm-redirector.com').to redirect_permanently_to('www.website.com')
   end 
+
+  it 'gives a good error message for the wrong redirect type' do
+    expect {
+      expect('temp-redirector.org').to redirect_permanently_to('www.website.com')
+    }.to fail_matching(/temporary/i)
+  end
 end
 
 
