@@ -32,11 +32,17 @@ end
 
 
 describe 'be_up' do
+  let(:rfc_url) {'http://www.rfc-editor.org/rfc/rfc2616.txt'}
+
   it 'follows redirects when necessary' do
     'weblaws.org'.should be_up
   end
 
   it 'can also handle a simple 200' do
-    'http://www.rfc-editor.org/rfc/rfc2616.txt'.should be_up
+    rfc_url.should be_up
+  end
+
+  it 'is available via a public API' do
+    RSpec::WebserviceMatchers.up?(rfc_url).should be true
   end
 end
