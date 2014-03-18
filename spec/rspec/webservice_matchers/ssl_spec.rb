@@ -20,7 +20,7 @@ describe 'have_a_valid_cert matcher' do
   it 'provides a relevant error message' do
     expect {
       expect('www.psu.edu').to have_a_valid_cert    
-    }.to fail_matching(/no route to host/i)
+    }.to fail_matching(/(no route to host)|(connection refused)/i)
   end
 
   it "provides a relevant error message when the domain name doesn't exist" do
