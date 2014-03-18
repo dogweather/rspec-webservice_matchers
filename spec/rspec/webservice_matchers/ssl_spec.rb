@@ -1,3 +1,4 @@
+require 'spec_helper'
 require 'rspec/webservice_matchers'
 
 # VCR may be the tool to use for this. Can it handle https? Would that work?
@@ -14,6 +15,13 @@ describe 'have_a_valid_cert matcher' do
     expect {
       expect('www.psu.edu').to have_a_valid_cert    
     }.to fail
+  end
+
+  it 'provides a relevant error message' do
+    pending 'Not sure what the message can look like'
+    expect {
+      expect('www.psu.edu').to have_a_valid_cert    
+    }.to fail_matching(/SSL/)
   end
 end
 

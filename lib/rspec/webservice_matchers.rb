@@ -93,18 +93,20 @@ module RSpec
           (actual_valid_cert == true)
       end
 
+      # Create a compound error message listing all of the
+      # relevant actual values received.
       failure_message_for_should do
         mesgs = []
         if actual_status != 301
-          mesgs << "Received status #{actual_status} instead of 301"
+          mesgs << "received status #{actual_status} instead of 301"
         end
         if !actual_protocol.nil? && actual_protocol != 'https'
-          mesgs << "Destination uses protocol #{actual_protocol.upcase}"
+          mesgs << "destination uses protocol #{actual_protocol.upcase}"
         end
         if ! actual_valid_cert
-          mesgs << "There's no valid SSL certificate"
+          mesgs << "there's no valid SSL certificate"
         end
-        mesgs.join('; ')
+        mesgs.join('; ').capitalize
       end
     end
 
