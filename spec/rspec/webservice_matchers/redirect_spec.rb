@@ -66,6 +66,15 @@ describe 'redirect_temporarily_to' do
     }.to fail_matching(/location/i)
   end
 
-  it 'gives a good error message for a non-redirect status'
-  it 'gives a good error message when the hostname is bad'
+  it 'gives a good error message for a non-redirect status' do
+    expect {
+      expect('notfound.com').to redirect_temporarily_to 'www.nowhere.com'
+    }.to fail_matching(/404/i)
+  end
+
+  it 'gives a good error message when the hostname is bad' do
+    expect {
+      expect('234678234687234.com').to redirect_temporarily_to 'www.nowhere.com'
+    }.to fail_matching(/not known/i)
+  end
 end
