@@ -60,7 +60,12 @@ describe 'redirect_temporarily_to' do
     }.to fail_matching(/permanent/i)
   end
 
-  it 'gives a good error message for a redirect to the wrong location'
+  it 'gives a good error message for a redirect to the wrong location' do
+    expect {
+      expect('temp-307-redirector.net').to redirect_temporarily_to 'www.nowhere.com'
+    }.to fail_matching(/location/i)
+  end
+
   it 'gives a good error message for a non-redirect status'
   it 'gives a good error message when the hostname is bad'
 end

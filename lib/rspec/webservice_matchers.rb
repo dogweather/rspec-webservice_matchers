@@ -96,7 +96,7 @@ module RSpec
             mesgs << "received a temporary redirect, status #{actual_status}"
           end
           if ! actual_location.nil? && ! (%r|#{expected}/?| === actual_location)
-            mesgs << "location was given as #{actual_location}"
+            mesgs << "received location #{actual_location}"
           end
           if ! [301, 302, 307].include? actual_status
             mesgs << "not a redirect: received status #{actual_status}"
@@ -134,7 +134,7 @@ module RSpec
             mesgs << "received a permanent redirect, status #{actual_status}"
           end
           if ! actual_location.nil? && ! (%r|#{expected}/?| === actual_location)
-            mesgs << "location was given as #{actual_location}"
+            mesgs << "received location #{actual_location}"
           end
           if ! [301, 302, 307].include? actual_status
             mesgs << "not a redirect: received status #{actual_status}"
