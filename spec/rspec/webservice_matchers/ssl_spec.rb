@@ -28,6 +28,12 @@ describe 'have_a_valid_cert matcher' do
       expect('sdfgkljhsdfghjkhsdfgj.edu').to have_a_valid_cert    
     }.to fail_matching(/not known/i)
   end
+
+  it 'provides a good error message if the request times out' do
+    expect {
+      'www.myapp.com'.should have_a_valid_cert
+    }.to fail_matching(/execution expired/)
+  end
 end
 
 
