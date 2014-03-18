@@ -95,7 +95,7 @@ module RSpec
           if [302, 307].include? actual_status
             mesgs << "received a temporary redirect, status #{actual_status}"
           end
-          if ! (%r|#{expected}/?| === actual_location)
+          if ! actual_location.nil? && ! (%r|#{expected}/?| === actual_location)
             mesgs << "location was given as #{actual_location}"
           end
           if ! [301, 302, 307].include? actual_status

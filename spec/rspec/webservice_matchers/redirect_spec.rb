@@ -27,7 +27,12 @@ describe 'redirect_permanently_to' do
     }.to fail_matching(/location/i)
   end
 
-  it 'gives a good error message for a non-redirect status'
+  it 'gives a good error message for a non-redirect status' do
+    expect {
+      expect('notfound.com').to redirect_permanently_to('http://the-wrong-site.com/')
+    }.to fail_matching(/404/i)    
+  end
+
   it 'gives a good error message when the hostname is bad'
 end
 
