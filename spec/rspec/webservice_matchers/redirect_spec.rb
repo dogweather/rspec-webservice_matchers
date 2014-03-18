@@ -1,10 +1,6 @@
 require 'spec_helper'
 require 'rspec/webservice_matchers'
 
-#
-# TODO: Set up a server for these. (Or a mock?) 
-#       Faraday supports testing: we can use that now.
-#
 
 describe 'redirect_permanently_to' do
   it 'passes when receiving a 301 to the given URL' do
@@ -30,5 +26,7 @@ describe 'redirect_temporarily_to' do
     'temp-redirector.org'.should redirect_temporarily_to 'a-page.com/a/page.txt'
   end 
 
-  it 'passes when it gets a 307'
+  it 'passes when it gets a 307' do
+    'temp-307-redirector.net'.should redirect_temporarily_to 'a-page.com/a/page.txt'
+  end
 end
