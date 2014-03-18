@@ -34,6 +34,7 @@ end
 describe 'be_up' do
   it 'follows redirects when necessary' do
     'perm-redirector.com'.should be_up
+    'temp-redirector.org'.should be_up
   end
 
   it 'can also handle a simple 200' do
@@ -42,5 +43,11 @@ describe 'be_up' do
 
   it 'is available via a public API' do
     RSpec::WebserviceMatchers.up?('http://www.website.com/').should be true
+  end
+
+  it 'gives relevant error output' do
+    expect {
+      expect('http://notfound.com/no.txt').to be_up
+    }.to fail_matching(/404/)
   end
 end

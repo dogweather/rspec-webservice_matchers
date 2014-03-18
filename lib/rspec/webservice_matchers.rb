@@ -106,8 +106,18 @@ module RSpec
     # Pass when the response code is 200, following redirects
     # if necessary.
     RSpec::Matchers.define :be_up do
+      actual_status = nil
+
       match do |url_or_domain_name|
-        RSpec::WebserviceMatchers.up?(url_or_domain_name)
+        url  = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
+        conn = RSpec::WebserviceMatchers.connection(follow: true)
+        response = conn.head(url)
+        actual_status = response.status
+        actual_status == 200
+      end
+
+      failure_message_for_should do
+        "Received status #{actual_status}"
       end
     end
 
