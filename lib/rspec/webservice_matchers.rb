@@ -70,15 +70,41 @@ module RSpec
       end
     end
 
+
     # This is a high level matcher which checks three things:
     # 1. Permanent redirect
     # 2. to an https url
     # 3. which is correctly configured
     RSpec::Matchers.define :enforce_https_everywhere do
+      actual_status = actual_protocol = actual_valid_cert = nil
+
       match do |domain_name|
         response = RSpec::WebserviceMatchers.connection.head("http://#{domain_name}")
         new_url  = response.headers['location']
-        (response.status == 301) && (/https/ === new_url) && (RSpec::WebserviceMatchers.has_valid_ssl_cert?(new_url))
+
+        actual_status  = response.status
+        if new_url =~ /^(https?)/
+          actual_protocol = $1
+        end
+        actual_valid_cert = RSpec::WebserviceMatchers.has_valid_ssl_cert?(new_url)
+        
+        (actual_status == 301) &&
+          (actual_protocol == 'https') &&
+          (actual_valid_cert == true)
+      end
+
+      failure_message_for_should do
+        mesgs = []
+        if actual_status != 301
+          mesgs << "Received status #{actual_status} instead of 301"
+        end
+        if !actual_protocol.nil? && actual_protocol != 'https'
+          mesgs << "Destination uses protocol #{actual_protocol.upcase}"
+        end
+        if ! actual_valid_cert
+          mesgs << "There's no valid SSL certificate"
+        end
+        mesgs.join('; ')
       end
     end
 
@@ -89,12 +115,11 @@ module RSpec
       actual_code = nil
       
       match do |url_or_domain_name|
-        url      = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
-        response = RSpec::WebserviceMatchers.connection.head(url)
-        actual   = response.status
-        expected = expected.to_i
-        actual_code = actual
-        actual == expected
+        url         = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
+        response    = RSpec::WebserviceMatchers.connection.head(url)
+        actual_code = response.status
+        expected    = expected.to_i
+        actual_code == expected
       end
 
       failure_message_for_should do

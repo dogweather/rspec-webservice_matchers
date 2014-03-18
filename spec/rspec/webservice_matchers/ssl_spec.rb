@@ -12,10 +12,8 @@ describe 'have_a_valid_cert matcher' do
 
   it 'fails if the server is not serving SSL at all' do
     expect {
-      # www.psu.edu only supports HTTP, port 80.
-      # TODO: set up a test server for this. (?)
       expect('www.psu.edu').to have_a_valid_cert    
-    }.to raise_error(RSpec::Expectations::ExpectationNotMetError)
+    }.to fail
   end
 end
 
@@ -24,5 +22,11 @@ end
 describe 'enforce_https_everywhere' do
   it 'passes when http requests are redirected to valid https urls' do
     expect('eff.org').to enforce_https_everywhere
+  end
+
+  it 'provides a relevant error message' do
+    expect {
+      expect('www.psu.edu').to enforce_https_everywhere
+    }.to fail_matching(/200/)
   end
 end
