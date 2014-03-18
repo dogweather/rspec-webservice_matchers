@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'rspec/webservice_matchers'
 
 
-describe 'status_code' do
+describe 'be_status' do
   it 'can check 200 for successful resource requests' do
     'http://a-page.com/a/page.txt'.should be_status 200
   end
@@ -21,6 +21,12 @@ describe 'status_code' do
 
   it 'can check for 404' do
     expect('http://notfound.com/no.txt').to be_status 404
+  end
+
+  it 'gives the actual code received in case of failure' do
+    expect {
+      expect('http://notfound.com/no.txt').to be_status 200
+    }.to fail_matching(/404/)
   end
 end
 
