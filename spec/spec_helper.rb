@@ -11,6 +11,9 @@ RSpec.configure do |config|
     WebMock.stub_request(:any, 'perm-redirector.com')
       .to_return(status: 301, headers: {Location: 'http://www.website.com/'})
 
+    WebMock.stub_request(:any, 'temp-redirector.org')
+      .to_return(status: 302, headers: {Location: 'http://a-page.com/a/page.txt'})
+
     WebMock.allow_net_connect!
   end
 end
