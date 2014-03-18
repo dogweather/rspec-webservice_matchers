@@ -82,18 +82,26 @@ module RSpec
       end
     end
 
+
     # Pass when a URL returns the expected status code
     # Codes are defined in http://www.rfc-editor.org/rfc/rfc2616.txt
     RSpec::Matchers.define :be_status do |expected|
+      actual_code = nil
+      
       match do |url_or_domain_name|
         url      = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
         response = RSpec::WebserviceMatchers.connection.head(url)
         actual   = response.status
         expected = expected.to_i
-
+        actual_code = actual
         actual == expected
       end
+
+      failure_message_for_should do
+        "Received status #{actual_code}"
+      end
     end
+
 
     # Pass when the response code is 200, following redirects
     # if necessary.
