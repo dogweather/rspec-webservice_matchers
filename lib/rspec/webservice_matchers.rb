@@ -109,13 +109,38 @@ module RSpec
 
     # Pass successfully if we get a 302 or 307 to the place we intend.
     RSpec::Matchers.define :redirect_temporarily_to do |expected|
-      match do |url|
-        response = RSpec::WebserviceMatchers.connection.head(RSpec::WebserviceMatchers.make_url(url))
-        expected = RSpec::WebserviceMatchers.make_url(expected)
-        actual   = response.headers['location']
-        status   = response.status
+      error_message = actual_status = actual_location = nil
 
-        [302, 307].include?(status) && (%r|#{expected}/?| === actual)
+      match do |url_or_domain_name|
+        begin
+          response = RSpec::WebserviceMatchers.connection.head(RSpec::WebserviceMatchers.make_url url_or_domain_name)
+          expected = RSpec::WebserviceMatchers.make_url(expected)
+          actual_location = response.headers['location']
+          actual_status   = response.status
+
+          [302, 307].include?(actual_status) && (%r|#{expected}/?| === actual_location)
+        rescue Exception => e
+          error_message = e.message
+          false  
+        end
+      end
+
+      failure_message_for_should do
+        if ! error_message.nil?
+          error_message
+        else
+          mesgs = []
+          if actual_status == 301
+            mesgs << "received a permanent redirect, status #{actual_status}"
+          end
+          if ! actual_location.nil? && ! (%r|#{expected}/?| === actual_location)
+            mesgs << "location was given as #{actual_location}"
+          end
+          if ! [301, 302, 307].include? actual_status
+            mesgs << "not a redirect: received status #{actual_status}"
+          end
+          mesgs.join('; ').capitalize
+        end
       end
     end
 
