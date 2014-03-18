@@ -26,6 +26,7 @@ module RSpec
       end
     end
 
+
     # Return true if the given page has status 200,
     # and follow a few redirects if necessary.
     def self.up?(url_or_domain_name)
@@ -36,15 +37,41 @@ module RSpec
     end
 
 
+    def self.try_ssl_connection(domain_name_or_url)
+      # Normalize the input: remove 'http(s)://' if it's there
+      if %r|^https?://(.+)$| === domain_name_or_url
+        domain_name_or_url = $1
+      end
+      connection.head("https://#{domain_name_or_url}")
+    end
+
+
     # RSpec Custom Matchers ###########################################
     # See https://www.relishapp.com/rspec/rspec-expectations/v/2-3/docs/custom-matchers/define-matcher
 
     # Test whether https is correctly implemented
     RSpec::Matchers.define :have_a_valid_cert do
+      error_message = nil
+
       match do |domain_name_or_url|
-        RSpec::WebserviceMatchers.has_valid_ssl_cert?(domain_name_or_url)
+        begin
+          RSpec::WebserviceMatchers.try_ssl_connection(domain_name_or_url)
+          true
+        rescue Exception => e
+          error_message = e.message
+          false
+        end
+      end
+
+      failure_message_for_should do
+        error_message
+      end
+
+      failure_message_for_should_not do
+        error_message
       end
     end
+
 
     # Pass successfully if we get a 301 to the place we intend.
     RSpec::Matchers.define :redirect_permanently_to do |expected|

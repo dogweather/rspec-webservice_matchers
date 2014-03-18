@@ -18,16 +18,15 @@ describe 'have_a_valid_cert matcher' do
   end
 
   it 'provides a relevant error message' do
-    pending 'Not sure what the message can look like'
     expect {
       expect('www.psu.edu').to have_a_valid_cert    
-    }.to fail_matching(/SSL/)
+    }.to fail_matching(/no route to host/i)
   end
 
   it "provides a relevant error message when the domain name doesn't exist" do
     expect {
       expect('sdfgkljhsdfghjkhsdfgj.edu').to have_a_valid_cert    
-    }.to fail_matching(/connection failed/i)
+    }.to fail_matching(/not known/i)
   end
 end
 
