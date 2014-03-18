@@ -33,7 +33,11 @@ describe 'redirect_permanently_to' do
     }.to fail_matching(/404/i)    
   end
 
-  it 'gives a good error message when the hostname is bad'
+  it 'gives a good error message when the hostname is bad' do
+    expect {
+      expect('asdhfjadhsfksd.com').to redirect_permanently_to('http://the-wrong-site.com/')
+    }.to fail_matching(/not known/i)    
+  end    
 end
 
 
