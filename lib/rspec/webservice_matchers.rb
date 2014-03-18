@@ -76,38 +76,46 @@ module RSpec
     # 2. to an https url
     # 3. which is correctly configured
     RSpec::Matchers.define :enforce_https_everywhere do
-      actual_status = actual_protocol = actual_valid_cert = nil
+      error_msg = actual_status = actual_protocol = actual_valid_cert = nil
 
       match do |domain_name|
-        response = RSpec::WebserviceMatchers.connection.head("http://#{domain_name}")
-        new_url  = response.headers['location']
-
-        actual_status  = response.status
-        if new_url =~ /^(https?)/
-          actual_protocol = $1
+        begin
+          response = RSpec::WebserviceMatchers.connection.head("http://#{domain_name}")
+          new_url  = response.headers['location']
+          actual_status  = response.status
+          if new_url =~ /^(https?)/
+            actual_protocol = $1
+          end
+          actual_valid_cert = RSpec::WebserviceMatchers.has_valid_ssl_cert?(new_url)
+          (actual_status == 301) &&
+            (actual_protocol == 'https') &&
+            (actual_valid_cert == true)
+        rescue Faraday::Error::ConnectionFailed => e
+          error_msg = "Connection failed"
+          false
         end
-        actual_valid_cert = RSpec::WebserviceMatchers.has_valid_ssl_cert?(new_url)
-        
-        (actual_status == 301) &&
-          (actual_protocol == 'https') &&
-          (actual_valid_cert == true)
       end
 
       # Create a compound error message listing all of the
       # relevant actual values received.
       failure_message_for_should do
-        mesgs = []
-        if actual_status != 301
-          mesgs << "received status #{actual_status} instead of 301"
+        if !error_msg.nil?
+          error_msg
+        else
+          mesgs = []
+          if actual_status != 301
+            mesgs << "received status #{actual_status} instead of 301"
+          end
+          if !actual_protocol.nil? && actual_protocol != 'https'
+            mesgs << "destination uses protocol #{actual_protocol.upcase}"
+          end
+          if ! actual_valid_cert
+            mesgs << "there's no valid SSL certificate"
+          end
+          mesgs.join('; ').capitalize
         end
-        if !actual_protocol.nil? && actual_protocol != 'https'
-          mesgs << "destination uses protocol #{actual_protocol.upcase}"
-        end
-        if ! actual_valid_cert
-          mesgs << "there's no valid SSL certificate"
-        end
-        mesgs.join('; ').capitalize
       end
+
     end
 
 

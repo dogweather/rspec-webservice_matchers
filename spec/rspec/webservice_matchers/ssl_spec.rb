@@ -23,6 +23,12 @@ describe 'have_a_valid_cert matcher' do
       expect('www.psu.edu').to have_a_valid_cert    
     }.to fail_matching(/SSL/)
   end
+
+  it "provides a relevant error message when the domain name doesn't exist" do
+    expect {
+      expect('sdfgkljhsdfghjkhsdfgj.edu').to have_a_valid_cert    
+    }.to fail_matching(/connection failed/i)
+  end
 end
 
 
@@ -36,5 +42,11 @@ describe 'enforce_https_everywhere' do
     expect {
       expect('www.psu.edu').to enforce_https_everywhere
     }.to fail_matching(/200/)
+  end
+
+  it "provides a relevant error message when the domain name doesn't exist" do
+    expect {
+      expect('asdhfjkalsdhfjklasdfhjkasdhfl.com').to enforce_https_everywhere
+    }.to fail_matching(/connection failed/i)
   end
 end
