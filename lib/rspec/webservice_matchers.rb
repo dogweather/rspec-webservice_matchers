@@ -123,6 +123,7 @@ module RSpec
         end
       end
 
+
       # Create a compound error message listing all of the
       # relevant actual values received.
       failure_message_for_should do
