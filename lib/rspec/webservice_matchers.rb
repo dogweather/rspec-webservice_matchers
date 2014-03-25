@@ -17,7 +17,7 @@ module RSpec
 
       match do |domain_name_or_url|
         begin
-          RSpec::WebserviceMatchers.try_ssl_connection(domain_name_or_url)
+          WebserviceMatchers.try_ssl_connection(domain_name_or_url)
           true
         rescue Exception => e
           error_message = e.message
