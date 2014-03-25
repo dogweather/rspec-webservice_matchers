@@ -8,31 +8,9 @@ TIMEOUT = 5
 OPEN_TIMEOUT = 2
 
 module RSpec
+  # RSpec Custom Matchers
+  # See https://www.relishapp.com/rspec/rspec-expectations/v/2-3/docs/custom-matchers/define-matcher
   module WebserviceMatchers
-    def self.valid_ssl_cert?(domain_name_or_url)
-      try_ssl_connection(domain_name_or_url)
-      true
-    rescue
-      # Not serving SSL, expired, or incorrect domain name in certificate
-      false
-    end
-
-    # Return true if the given page has status 200,
-    # and follow a few redirects if necessary.
-    def self.up?(url_or_domain_name)
-      url  = make_url(url_or_domain_name)
-      conn = connection(follow: true)
-      response = conn.head(url)
-      response.status == 200
-    end
-
-    def self.try_ssl_connection(domain_name_or_url)
-      connection.head("https://#{remove_protocol(domain_name_or_url)}")
-    end
-
-    # RSpec Custom Matchers ###########################################
-    # See https://www.relishapp.com/rspec/rspec-expectations/v/2-3/docs/custom-matchers/define-matcher
-
     # Test whether https is correctly implemented
     RSpec::Matchers.define :have_a_valid_cert do
       error_message = nil
@@ -164,7 +142,7 @@ module RSpec
           if !actual_protocol.nil? && actual_protocol != 'https'
             mesgs << "destination uses protocol #{actual_protocol.upcase}"
           end
-          if ! actual_valid_cert
+          if !actual_valid_cert
             mesgs << "there's no valid SSL certificate"
           end
           mesgs.join('; ').capitalize
@@ -175,15 +153,15 @@ module RSpec
 
     # Pass when a URL returns the expected status code
     # Codes are defined in http://www.rfc-editor.org/rfc/rfc2616.txt
-    RSpec::Matchers.define :be_status do |expected|
+    RSpec::Matchers.define :be_status do |expected_code|
       actual_code = nil
 
       match do |url_or_domain_name|
-        url         = WebserviceMatchers.make_url(url_or_domain_name)
-        response    = WebserviceMatchers.connection.head(url)
-        actual_code = response.status
-        expected    = expected.to_i
-        actual_code == expected
+        url           = WebserviceMatchers.make_url(url_or_domain_name)
+        response      = WebserviceMatchers.connection.head(url)
+        actual_code   = response.status
+        expected_code = expected_code.to_i
+        actual_code   == expected_code
       end
 
       failure_message_for_should do
@@ -207,6 +185,27 @@ module RSpec
       failure_message_for_should do
         "Received status #{actual_status}"
       end
+    end
+
+    # Return true if the given page has status 200,
+    # and follow a few redirects if necessary.
+    def self.up?(url_or_domain_name)
+      url  = make_url(url_or_domain_name)
+      conn = connection(follow: true)
+      response = conn.head(url)
+      response.status == 200
+    end
+
+    def self.valid_ssl_cert?(domain_name_or_url)
+      try_ssl_connection(domain_name_or_url)
+      true
+    rescue
+      # Not serving SSL, expired, or incorrect domain name in certificate
+      false
+    end
+
+    def self.try_ssl_connection(domain_name_or_url)
+      connection.head("https://#{remove_protocol(domain_name_or_url)}")
     end
 
     private
