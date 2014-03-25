@@ -1,31 +1,28 @@
 require 'spec_helper'
 require 'rspec/webservice_matchers'
 
-# VCR may be the tool to use for this. Can it handle https? Would that work?
-
-
 describe 'have_a_valid_cert matcher' do
   it 'passes when SSL is properly configured' do
     # EFF created the HTTPS Everywhere movement
     # TODO: set up a test server for this. (?)
     expect('www.eff.org').to have_a_valid_cert
-  end  
+  end
 
   it 'fails if the server is not serving SSL at all' do
     expect {
-      expect('www.psu.edu').to have_a_valid_cert    
+      expect('www.psu.edu').to have_a_valid_cert
     }.to fail
   end
 
   it 'provides a relevant error message' do
     expect {
-      expect('www.psu.edu').to have_a_valid_cert    
+      expect('www.psu.edu').to have_a_valid_cert
     }.to fail_matching(/(no route to host)|(connection refused)/i)
   end
 
   it "provides a relevant error message when the domain name doesn't exist" do
     expect {
-      expect('sdfgkljhsdfghjkhsdfgj.edu').to have_a_valid_cert    
+      expect('sdfgkljhsdfghjkhsdfgj.edu').to have_a_valid_cert
     }.to fail_matching(/not known/i)
   end
 
@@ -35,7 +32,6 @@ describe 'have_a_valid_cert matcher' do
     }.to fail_matching(/execution expired/)
   end
 end
-
 
 # See https://www.eff.org/https-everywhere
 describe 'enforce_https_everywhere' do

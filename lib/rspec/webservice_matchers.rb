@@ -1,54 +1,16 @@
 require 'rspec/webservice_matchers/version'
 require 'faraday'
 require 'faraday_middleware'
+require 'pry'
 
 # Seconds
-TIMEOUT = 5 
+TIMEOUT = 5
 OPEN_TIMEOUT = 2
 
-
 module RSpec
+  # RSpec Custom Matchers
+  # See https://www.relishapp.com/rspec/rspec-expectations/v/2-3/docs/custom-matchers/define-matcher
   module WebserviceMatchers
-
-    def self.has_valid_ssl_cert?(domain_name_or_url)
-      # Normalize the input: remove 'http(s)://' if it's there
-      if %r|^https?://(.+)$| === domain_name_or_url
-        domain_name_or_url = $1
-      end
-
-      # Test by seeing if Curl retrieves without complaining
-      begin
-        connection.head("https://#{domain_name_or_url}")
-        return true
-      rescue
-        # Not serving SSL, expired, or incorrect domain name in certificate
-        return false
-      end
-    end
-
-
-    # Return true if the given page has status 200,
-    # and follow a few redirects if necessary.
-    def self.up?(url_or_domain_name)
-      url  = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
-      conn = RSpec::WebserviceMatchers.connection(follow: true)
-      response = conn.head(url)
-      response.status == 200
-    end
-
-
-    def self.try_ssl_connection(domain_name_or_url)
-      # Normalize the input: remove 'http(s)://' if it's there
-      if %r|^https?://(.+)$| === domain_name_or_url
-        domain_name_or_url = $1
-      end
-      connection.head("https://#{domain_name_or_url}")
-    end
-
-
-    # RSpec Custom Matchers ###########################################
-    # See https://www.relishapp.com/rspec/rspec-expectations/v/2-3/docs/custom-matchers/define-matcher
-
     # Test whether https is correctly implemented
     RSpec::Matchers.define :have_a_valid_cert do
       error_message = nil
@@ -68,37 +30,36 @@ module RSpec
       end
     end
 
-
     # Pass successfully if we get a 301 to the place we intend.
     RSpec::Matchers.define :redirect_permanently_to do |expected|
       error_message = actual_status = actual_location = nil
 
       match do |url_or_domain_name|
         begin
-          response = RSpec::WebserviceMatchers.connection.head(RSpec::WebserviceMatchers.make_url url_or_domain_name)
-          expected = RSpec::WebserviceMatchers.make_url(expected)
+          response = WebserviceMatchers.connection.head(WebserviceMatchers.make_url url_or_domain_name)
+          expected = WebserviceMatchers.make_url(expected)
           actual_location = response.headers['location']
           actual_status   = response.status
 
-          (actual_status == 301) && (%r|#{expected}/?| === actual_location)
+          (actual_status == 301) && (/#{expected}\/?/.match(actual_location))
         rescue Exception => e
           error_message = e.message
-          false  
+          false
         end
       end
 
       failure_message_for_should do
-        if ! error_message.nil?
+        if !error_message.nil?
           error_message
         else
           mesgs = []
           if [302, 307].include? actual_status
             mesgs << "received a temporary redirect, status #{actual_status}"
           end
-          if ! actual_location.nil? && ! (%r|#{expected}/?| === actual_location)
+          if !actual_location.nil? && ! (%r|#{expected}/?| === actual_location)
             mesgs << "received location #{actual_location}"
           end
-          if ! [301, 302, 307].include? actual_status
+          if ![301, 302, 307].include? actual_status
             mesgs << "not a redirect: received status #{actual_status}"
           end
           mesgs.join('; ').capitalize
@@ -106,44 +67,43 @@ module RSpec
       end
     end
 
-
     # Pass successfully if we get a 302 or 307 to the place we intend.
     RSpec::Matchers.define :redirect_temporarily_to do |expected|
+      include RSpec
       error_message = actual_status = actual_location = nil
 
       match do |url_or_domain_name|
         begin
-          response = RSpec::WebserviceMatchers.connection.head(RSpec::WebserviceMatchers.make_url url_or_domain_name)
-          expected = RSpec::WebserviceMatchers.make_url(expected)
+          response = WebserviceMatchers.connection.head(WebserviceMatchers.make_url url_or_domain_name)
+          expected = WebserviceMatchers.make_url(expected)
           actual_location = response.headers['location']
           actual_status   = response.status
 
-          [302, 307].include?(actual_status) && (%r|#{expected}/?| === actual_location)
+          [302, 307].include?(actual_status) && (/#{expected}\/?/ =~ actual_location)
         rescue Exception => e
           error_message = e.message
-          false  
+          false
         end
       end
 
       failure_message_for_should do
-        if ! error_message.nil?
+        if !error_message.nil?
           error_message
         else
           mesgs = []
           if actual_status == 301
             mesgs << "received a permanent redirect, status #{actual_status}"
           end
-          if ! actual_location.nil? && ! (%r|#{expected}/?| === actual_location)
+          if !actual_location.nil? && ! (%r|#{expected}/?| === actual_location)
             mesgs << "received location #{actual_location}"
           end
-          if ! [301, 302, 307].include? actual_status
+          if ![301, 302, 307].include? actual_status
             mesgs << "not a redirect: received status #{actual_status}"
           end
           mesgs.join('; ').capitalize
         end
       end
     end
-
 
     # This is a high level matcher which checks three things:
     # 1. Permanent redirect
@@ -154,18 +114,17 @@ module RSpec
 
       match do |domain_name|
         begin
-          response = RSpec::WebserviceMatchers.connection.head("http://#{domain_name}")
+          response = WebserviceMatchers.connection.head("http://#{domain_name}")
           new_url  = response.headers['location']
           actual_status  = response.status
-          if new_url =~ /^(https?)/
-            actual_protocol = $1
-          end
-          actual_valid_cert = RSpec::WebserviceMatchers.has_valid_ssl_cert?(new_url)
+          /^(?<protocol>https?)/ =~ new_url
+          actual_protocol = protocol || nil
+          actual_valid_cert = WebserviceMatchers.valid_ssl_cert?(new_url)
           (actual_status == 301) &&
             (actual_protocol == 'https') &&
             (actual_valid_cert == true)
-        rescue Faraday::Error::ConnectionFailed => e
-          error_msg = "Connection failed"
+        rescue Faraday::Error::ConnectionFailed
+          error_msg = 'Connection failed'
           false
         end
       end
@@ -183,7 +142,7 @@ module RSpec
           if !actual_protocol.nil? && actual_protocol != 'https'
             mesgs << "destination uses protocol #{actual_protocol.upcase}"
           end
-          if ! actual_valid_cert
+          if !actual_valid_cert
             mesgs << "there's no valid SSL certificate"
           end
           mesgs.join('; ').capitalize
@@ -192,18 +151,17 @@ module RSpec
 
     end
 
-
     # Pass when a URL returns the expected status code
     # Codes are defined in http://www.rfc-editor.org/rfc/rfc2616.txt
-    RSpec::Matchers.define :be_status do |expected|
+    RSpec::Matchers.define :be_status do |expected_code|
       actual_code = nil
-      
+
       match do |url_or_domain_name|
-        url         = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
-        response    = RSpec::WebserviceMatchers.connection.head(url)
-        actual_code = response.status
-        expected    = expected.to_i
-        actual_code == expected
+        url           = WebserviceMatchers.make_url(url_or_domain_name)
+        response      = WebserviceMatchers.connection.head(url)
+        actual_code   = response.status
+        expected_code = expected_code.to_i
+        actual_code   == expected_code
       end
 
       failure_message_for_should do
@@ -211,15 +169,14 @@ module RSpec
       end
     end
 
-
     # Pass when the response code is 200, following redirects
     # if necessary.
     RSpec::Matchers.define :be_up do
       actual_status = nil
 
       match do |url_or_domain_name|
-        url  = RSpec::WebserviceMatchers.make_url(url_or_domain_name)
-        conn = RSpec::WebserviceMatchers.connection(follow: true)
+        url  = WebserviceMatchers.make_url(url_or_domain_name)
+        conn = WebserviceMatchers.connection(follow: true)
         response = conn.head(url)
         actual_status = response.status
         actual_status == 200
@@ -230,6 +187,26 @@ module RSpec
       end
     end
 
+    # Return true if the given page has status 200,
+    # and follow a few redirects if necessary.
+    def self.up?(url_or_domain_name)
+      url  = make_url(url_or_domain_name)
+      conn = connection(follow: true)
+      response = conn.head(url)
+      response.status == 200
+    end
+
+    def self.valid_ssl_cert?(domain_name_or_url)
+      try_ssl_connection(domain_name_or_url)
+      true
+    rescue
+      # Not serving SSL, expired, or incorrect domain name in certificate
+      false
+    end
+
+    def self.try_ssl_connection(domain_name_or_url)
+      connection.head("https://#{remove_protocol(domain_name_or_url)}")
+    end
 
     private
 
@@ -237,22 +214,25 @@ module RSpec
       Faraday.new do |c|
         c.options[:timeout] = TIMEOUT
         c.options[:open_timeout] = TIMEOUT
-        if follow
-          c.use FaradayMiddleware::FollowRedirects, limit: 4          
-        end
+        c.use(FaradayMiddleware::FollowRedirects, limit: 4) if follow
         c.adapter :net_http
-      end      
+      end
     end
 
     # Ensure that the given string is a URL,
     # making it into one if necessary.
     def self.make_url(url_or_domain_name)
-      unless %r|^https?://| === url_or_domain_name
-        "http://#{url_or_domain_name}"
-      else
+      if %r{^https?://} =~ url_or_domain_name
         url_or_domain_name
+      else
+        "http://#{url_or_domain_name}"
       end
     end
 
+    # Normalize the input: remove 'http(s)://' if it's there
+    def self.remove_protocol(domain_name_or_url)
+      %r{^https?://(?<name>.+)$} =~ domain_name_or_url
+      name || domain_name_or_url
+    end
   end
 end
