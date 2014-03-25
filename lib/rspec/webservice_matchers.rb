@@ -2,6 +2,8 @@ require 'rspec/webservice_matchers/version'
 require 'faraday'
 require 'faraday_middleware'
 
+# TODO: Refactor and simplify
+
 # Seconds
 TIMEOUT = 5 
 OPEN_TIMEOUT = 2
@@ -83,7 +85,7 @@ module RSpec
           (actual_status == 301) && (%r|#{expected}/?| === actual_location)
         rescue Exception => e
           error_message = e.message
-          false  
+          false
         end
       end
 
