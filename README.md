@@ -19,9 +19,9 @@ These new RSpec matchers:
 
                                | Notes
 -------------------------------|------------------------------------------------
-**be_status**                  |  
-**be_up**                      | Follows redirects if necessary and checks for 200
-**have_a_valid_cert**          | 
+**be_status**                  | A lower level matcher for explicitly checking for a 200, 503, or any other code
+**be_up**                      | Looks for a 200, but will follow up to four redirects
+**have_a_valid_cert**          | Will fail if there's no cert, or it's expired or incorrectly configured
 **enforce_https_everywhere**   | See the [EFF project](https://www.eff.org/https-everywhere)
 **redirect_permanently_to**    | Checks for 301
 **redirect_temporarily_to**    | Checks for 302 or 307
