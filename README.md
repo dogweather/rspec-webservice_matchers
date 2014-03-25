@@ -2,10 +2,9 @@
 
 [![Gem Version](https://badge.fury.io/rb/rspec-webservice_matchers.png)](http://badge.fury.io/rb/rspec-webservice_matchers) [![Build Status](https://travis-ci.org/dogweather/rspec-webservice_matchers.png?branch=master)](https://travis-ci.org/dogweather/rspec-webservice_matchers)
 
-This [gem](https://rubygems.org/gems/rspec-webservice_matchers) enables you to black-box test a web app's server configuration. For example, whether its SSL certificate is correctly configured and not expired. It's a tool for doing **Test Driven Devops** (I just made that up). See [my blog post](http://robb.weblaws.org/2014/01/16/new-open-source-library-for-test-driven-devops/) for more about my motivations for making this.
+This [gem](https://rubygems.org/gems/rspec-webservice_matchers) enables you to black-box test a web app's server configuration. For example, whether its SSL certificate is correctly configured and not expired. It's a tool for doing **Test Driven Devops** (I just made that up). See [the introductory blog post](http://robb.weblaws.org/2014/01/16/new-open-source-library-for-test-driven-devops/) for more about the motivations for making this.
 
-This library takes a very minimalist approach: it simply adds new RSpec matchers,
-and so you can use your own RSpec writing style; there's no new DSL to learn.
+This library takes a minimalist approach: it simply adds new RSpec matchers. Therefore, you can use your own RSpec writing style; there's no new DSL to learn.
 
 Installation
 ------------
@@ -23,8 +22,8 @@ These new RSpec matchers:
 **be_up**                      | Looks for a 200, but will follow up to four redirects
 **have_a_valid_cert**          | Will fail if there's no cert, or it's expired or incorrectly configured
 **enforce_https_everywhere**   | Passes if the site will _only_ allow SSL connections. See the [EFF project, HTTP Everywhere](https://www.eff.org/https-everywhere)
-**redirect_permanently_to**    | Checks for 301
-**redirect_temporarily_to**    | Checks for 302 or 307
+**redirect_permanently_to**    | Checks for 301 and a correct destination URL
+**redirect_temporarily_to**    | Checks for 302 or 307 and a correct destination
 
 
 Example
