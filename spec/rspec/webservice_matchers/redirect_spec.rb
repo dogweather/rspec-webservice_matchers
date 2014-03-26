@@ -1,10 +1,9 @@
 require 'spec_helper'
 require 'rspec/webservice_matchers'
 
-
 describe 'redirect_permanently_to' do
   it 'passes when receiving a 301 to the given URL' do
-    expect('http://perm-redirector.com').to redirect_permanently_to 'http://www.website.com/' 
+    expect('http://perm-redirector.com').to redirect_permanently_to 'http://www.website.com/'
   end
 
   it 'handles domain names gracefully' do
@@ -13,7 +12,7 @@ describe 'redirect_permanently_to' do
 
   it 'handles a missing final slash' do
     expect('perm-redirector.com').to redirect_permanently_to 'www.website.com'
-  end 
+  end
 
   it 'gives a good error message for the wrong redirect type' do
     expect {
@@ -30,16 +29,15 @@ describe 'redirect_permanently_to' do
   it 'gives a good error message for a non-redirect status' do
     expect {
       expect('notfound.com').to redirect_permanently_to 'http://the-wrong-site.com/'
-    }.to fail_matching(/404/i)    
+    }.to fail_matching(/404/i)
   end
 
   it 'gives a good error message when the hostname is bad' do
     expect {
       expect('asdhfjadhsfksd.com').to redirect_permanently_to 'http://the-wrong-site.com/'
-    }.to fail_matching(/not known/i)    
-  end    
+    }.to fail_matching(/not known/i)
+  end
 end
-
 
 describe 'redirect_temporarily_to' do
   it 'passes when it gets a 302' do
@@ -48,7 +46,7 @@ describe 'redirect_temporarily_to' do
 
   it 'handles domain names gracefully' do
     'temp-redirector.org'.should redirect_temporarily_to 'a-page.com/a/page.txt'
-  end 
+  end
 
   it 'passes when it gets a 307' do
     'temp-307-redirector.net'.should redirect_temporarily_to 'a-page.com/a/page.txt'

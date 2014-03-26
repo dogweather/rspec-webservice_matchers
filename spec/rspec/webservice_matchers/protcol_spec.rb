@@ -1,7 +1,6 @@
 require 'spec_helper'
 require 'rspec/webservice_matchers'
 
-
 describe 'be_status' do
   it 'can check 200 for successful resource requests' do
     'http://a-page.com/a/page.txt'.should be_status 200
@@ -29,7 +28,6 @@ describe 'be_status' do
     }.to fail_matching(/404/)
   end
 end
-
 
 describe 'be_up' do
   it 'follows redirects when necessary' do

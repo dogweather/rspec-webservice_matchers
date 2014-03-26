@@ -1,4 +1,4 @@
-require "codeclimate-test-reporter"
+require 'codeclimate-test-reporter'
 CodeClimate::TestReporter.start
 
 require 'webmock/rspec'
@@ -12,20 +12,20 @@ RSpec.configure do |config|
     WebMock.stub_request(:any, 'outoforder.com').to_return(status: 503)
 
     WebMock.stub_request(:any, 'perm-redirector.com')
-      .to_return(status: 301, headers: {Location: 'http://www.website.com/'})
+      .to_return(status: 301, headers: { Location: 'http://www.website.com/' })
 
     WebMock.stub_request(:any, 'temp-redirector.org')
-      .to_return(status: 302, headers: {Location: 'http://a-page.com/a/page.txt'})
+      .to_return(status: 302, headers: { Location: 'http://a-page.com/a/page.txt' })
 
     WebMock.stub_request(:any, 'temp-307-redirector.net')
-      .to_return(status: 307, headers: {Location: 'http://a-page.com/a/page.txt'})
+      .to_return(status: 307, headers: { Location: 'http://a-page.com/a/page.txt' })
 
     WebMock.allow_net_connect!
   end
 end
 
-
 module RSpec
+  # Matchers to help test RSpec matchers
   module Matchers
     def fail
       raise_error(RSpec::Expectations::ExpectationNotMetError)
