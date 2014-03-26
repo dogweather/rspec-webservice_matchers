@@ -1,6 +1,6 @@
 # RSpec::WebserviceMatchers
 
-[![Gem Version](https://badge.fury.io/rb/rspec-webservice_matchers.png)](http://badge.fury.io/rb/rspec-webservice_matchers) [![Build Status](https://travis-ci.org/dogweather/rspec-webservice_matchers.png?branch=master)](https://travis-ci.org/dogweather/rspec-webservice_matchers)
+[![Gem Version](https://badge.fury.io/rb/rspec-webservice_matchers.png)](http://badge.fury.io/rb/rspec-webservice_matchers) [![Build Status](https://travis-ci.org/dogweather/rspec-webservice_matchers.png?branch=master)](https://travis-ci.org/dogweather/rspec-webservice_matchers) [![Code Climate](https://codeclimate.com/github/dogweather/rspec-webservice_matchers.png)](https://codeclimate.com/github/dogweather/rspec-webservice_matchers)
 
 This [gem](https://rubygems.org/gems/rspec-webservice_matchers) enables you to black-box test a web app's server configuration. For example, whether its SSL certificate is correctly configured and not expired. It's a tool for doing **Test Driven Devops** (I just made that up). See [the introductory blog post](http://robb.weblaws.org/2014/01/16/new-open-source-library-for-test-driven-devops/) for more about the motivations for making this.
 
