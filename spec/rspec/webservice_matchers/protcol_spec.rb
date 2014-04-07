@@ -27,6 +27,10 @@ describe 'be_status' do
       expect('http://notfound.com/no.txt').to be_status 200
     }.to fail_matching(/404/)
   end
+
+  it 'succeeds even if the site times out on the first try' do
+    'http://www.timeout-once.com'.should be_status 200
+  end
 end
 
 describe 'be_up' do
