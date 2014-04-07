@@ -181,7 +181,11 @@ module RSpec
       match do |url_or_domain_name|
         url  = WebserviceMatchers.make_url(url_or_domain_name)
         conn = WebserviceMatchers.connection(follow: true)
-        response = conn.head(url)
+        begin
+          response      = conn.head(url)
+        rescue Faraday::Error::TimeoutError
+          response      = conn.head(url)
+        end
         actual_status = response.status
         actual_status == 200
       end
