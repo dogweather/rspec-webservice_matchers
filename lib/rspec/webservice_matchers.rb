@@ -158,11 +158,7 @@ module RSpec
 
       match do |url_or_domain_name|
         url           = WebserviceMatchers.make_url(url_or_domain_name)
-        begin
-          response      = WebserviceMatchers.connection.head(url)
-        rescue Faraday::Error::TimeoutError
-          response      = WebserviceMatchers.connection.head(url)
-        end
+        response      = WebserviceMatchers.recheck_on_timeout { WebserviceMatchers.connection.head(url) }
         actual_code   = response.status
         expected_code = expected_code.to_i
         actual_code   == expected_code
@@ -181,11 +177,7 @@ module RSpec
       match do |url_or_domain_name|
         url  = WebserviceMatchers.make_url(url_or_domain_name)
         conn = WebserviceMatchers.connection(follow: true)
-        begin
-          response      = conn.head(url)
-        rescue Faraday::Error::TimeoutError
-          response      = conn.head(url)
-        end
+        response = WebserviceMatchers.recheck_on_timeout { conn.head(url) }
         actual_status = response.status
         actual_status == 200
       end
@@ -242,6 +234,14 @@ module RSpec
     def self.remove_protocol(domain_name_or_url)
       %r{^https?://(?<name>.+)$} =~ domain_name_or_url
       name || domain_name_or_url
+    end
+
+    def self.recheck_on_timeout
+      begin
+        yield
+      rescue Faraday::Error::TimeoutError
+        yield
+      end
     end
   end
 end
