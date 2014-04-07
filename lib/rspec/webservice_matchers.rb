@@ -192,7 +192,7 @@ module RSpec
     def self.up?(url_or_domain_name)
       url  = make_url(url_or_domain_name)
       conn = connection(follow: true)
-      response = conn.head(url)
+      response = recheck_on_timeout { conn.head(url) }
       response.status == 200
     end
 
