@@ -36,7 +36,7 @@ module RSpec
 
       match do |url_or_domain_name|
         begin
-          response = WebserviceMatchers.connection.head(WebserviceMatchers.make_url url_or_domain_name)
+          response = WebserviceMatchers.recheck_on_timeout { WebserviceMatchers.connection.head(WebserviceMatchers.make_url url_or_domain_name) }
           expected = WebserviceMatchers.make_url(expected)
           actual_location = response.headers['location']
           actual_status   = response.status
@@ -74,7 +74,7 @@ module RSpec
 
       match do |url_or_domain_name|
         begin
-          response = WebserviceMatchers.connection.head(WebserviceMatchers.make_url url_or_domain_name)
+          response = WebserviceMatchers.recheck_on_timeout { WebserviceMatchers.connection.head(WebserviceMatchers.make_url url_or_domain_name) }
           expected = WebserviceMatchers.make_url(expected)
           actual_location = response.headers['location']
           actual_status   = response.status
@@ -114,7 +114,7 @@ module RSpec
 
       match do |domain_name|
         begin
-          response = WebserviceMatchers.connection.head("http://#{domain_name}")
+          response = WebserviceMatchers.recheck_on_timeout { WebserviceMatchers.connection.head("http://#{domain_name}") }
           new_url  = response.headers['location']
           actual_status  = response.status
           /^(?<protocol>https?)/ =~ new_url
@@ -205,7 +205,7 @@ module RSpec
     end
 
     def self.try_ssl_connection(domain_name_or_url)
-      connection.head("https://#{remove_protocol(domain_name_or_url)}")
+      recheck_on_timeout { connection.head("https://#{remove_protocol(domain_name_or_url)}") }
     end
 
 
