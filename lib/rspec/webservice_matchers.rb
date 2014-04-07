@@ -36,7 +36,7 @@ module RSpec
 
       match do |url_or_domain_name|
         begin
-          response = WebserviceMatchers.connection.head(WebserviceMatchers.make_url url_or_domain_name)
+          response = WebserviceMatchers.recheck_on_timeout { WebserviceMatchers.connection.head(WebserviceMatchers.make_url url_or_domain_name) }
           expected = WebserviceMatchers.make_url(expected)
           actual_location = response.headers['location']
           actual_status   = response.status
@@ -74,7 +74,7 @@ module RSpec
 
       match do |url_or_domain_name|
         begin
-          response = WebserviceMatchers.connection.head(WebserviceMatchers.make_url url_or_domain_name)
+          response = WebserviceMatchers.recheck_on_timeout { WebserviceMatchers.connection.head(WebserviceMatchers.make_url url_or_domain_name) }
           expected = WebserviceMatchers.make_url(expected)
           actual_location = response.headers['location']
           actual_status   = response.status
@@ -114,7 +114,7 @@ module RSpec
 
       match do |domain_name|
         begin
-          response = WebserviceMatchers.connection.head("http://#{domain_name}")
+          response = WebserviceMatchers.recheck_on_timeout { WebserviceMatchers.connection.head("http://#{domain_name}") }
           new_url  = response.headers['location']
           actual_status  = response.status
           /^(?<protocol>https?)/ =~ new_url
@@ -158,7 +158,7 @@ module RSpec
 
       match do |url_or_domain_name|
         url           = WebserviceMatchers.make_url(url_or_domain_name)
-        response      = WebserviceMatchers.connection.head(url)
+        response      = WebserviceMatchers.recheck_on_timeout { WebserviceMatchers.connection.head(url) }
         actual_code   = response.status
         expected_code = expected_code.to_i
         actual_code   == expected_code
@@ -177,7 +177,7 @@ module RSpec
       match do |url_or_domain_name|
         url  = WebserviceMatchers.make_url(url_or_domain_name)
         conn = WebserviceMatchers.connection(follow: true)
-        response = conn.head(url)
+        response = WebserviceMatchers.recheck_on_timeout { conn.head(url) }
         actual_status = response.status
         actual_status == 200
       end
@@ -192,7 +192,7 @@ module RSpec
     def self.up?(url_or_domain_name)
       url  = make_url(url_or_domain_name)
       conn = connection(follow: true)
-      response = conn.head(url)
+      response = recheck_on_timeout { conn.head(url) }
       response.status == 200
     end
 
@@ -205,8 +205,9 @@ module RSpec
     end
 
     def self.try_ssl_connection(domain_name_or_url)
-      connection.head("https://#{remove_protocol(domain_name_or_url)}")
+      recheck_on_timeout { connection.head("https://#{remove_protocol(domain_name_or_url)}") }
     end
+
 
     private
 
@@ -233,6 +234,14 @@ module RSpec
     def self.remove_protocol(domain_name_or_url)
       %r{^https?://(?<name>.+)$} =~ domain_name_or_url
       name || domain_name_or_url
+    end
+
+    def self.recheck_on_timeout
+      begin
+        yield
+      rescue Faraday::Error::TimeoutError
+        yield
+      end
     end
   end
 end
