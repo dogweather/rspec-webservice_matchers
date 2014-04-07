@@ -158,7 +158,11 @@ module RSpec
 
       match do |url_or_domain_name|
         url           = WebserviceMatchers.make_url(url_or_domain_name)
-        response      = WebserviceMatchers.connection.head(url)
+        begin
+          response      = WebserviceMatchers.connection.head(url)
+        rescue Faraday::Error::TimeoutError
+          response      = WebserviceMatchers.connection.head(url)
+        end
         actual_code   = response.status
         expected_code = expected_code.to_i
         actual_code   == expected_code
@@ -207,6 +211,7 @@ module RSpec
     def self.try_ssl_connection(domain_name_or_url)
       connection.head("https://#{remove_protocol(domain_name_or_url)}")
     end
+
 
     private
 
