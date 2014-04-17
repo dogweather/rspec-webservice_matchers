@@ -1,3 +1,5 @@
+.DS*
+._*
 *.gem
 *.rbc
 .bundle

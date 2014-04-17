@@ -17,7 +17,7 @@ describe 'have_a_valid_cert matcher' do
   it 'provides a relevant error message' do
     expect {
       expect('www.psu.edu').to have_a_valid_cert
-    }.to fail_matching(/(no route to host)|(connection refused)/i)
+    }.to fail_matching(/(unreachable)|(no route to host)|(connection refused)/i)
   end
 
   it "provides a relevant error message when the domain name doesn't exist" do
@@ -29,7 +29,7 @@ describe 'have_a_valid_cert matcher' do
   it 'provides a good error message if the request times out' do
     expect {
       'www.myapp.com'.should have_a_valid_cert
-    }.to fail_matching(/execution expired/)
+    }.to fail_matching(/(timeout)|(execution expired)/)
   end
 end
 

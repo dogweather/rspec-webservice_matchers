@@ -1,11 +1,12 @@
 require 'rspec/webservice_matchers/version'
+require 'excon'
 require 'faraday'
 require 'faraday_middleware'
 require 'pry'
 
 # Seconds
-TIMEOUT = 5
-OPEN_TIMEOUT = 2
+TIMEOUT = 20
+OPEN_TIMEOUT = 20
 
 module RSpec
   # RSpec Custom Matchers
@@ -214,9 +215,9 @@ module RSpec
     def self.connection(follow: false)
       Faraday.new do |c|
         c.options[:timeout] = TIMEOUT
-        c.options[:open_timeout] = TIMEOUT
+        c.options[:open_timeout] = OPEN_TIMEOUT
         c.use(FaradayMiddleware::FollowRedirects, limit: 4) if follow
-        c.adapter :net_http
+        c.adapter :excon
       end
     end
 

@@ -22,9 +22,9 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rake'
   spec.add_development_dependency 'pry'
   spec.add_development_dependency 'webmock'
-  spec.add_development_dependency 'codeclimate-test-reporter'
 
   spec.add_runtime_dependency 'rspec', '~> 2'
+  spec.add_runtime_dependency 'excon'
   spec.add_runtime_dependency 'faraday'
   spec.add_runtime_dependency 'faraday_middleware'
 end

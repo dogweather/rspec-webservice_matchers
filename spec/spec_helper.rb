@@ -1,6 +1,3 @@
-require 'codeclimate-test-reporter'
-CodeClimate::TestReporter.start
-
 require 'webmock/rspec'
 
 RSpec.configure do |config|
