@@ -6,6 +6,8 @@ This [gem](https://rubygems.org/gems/rspec-webservice_matchers) enables you to b
 
 This library takes a minimalist approach: it simply adds new RSpec matchers. Therefore, you can use your own RSpec writing style; there's no new DSL to learn.
 
+**News:** There are now [Bounties on Assembly](https://assembly.com/think-200/bounties) for contributing to this gem.
+
 Installation
 ------------
 ```Shell
