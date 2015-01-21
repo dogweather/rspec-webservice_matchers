@@ -28,7 +28,7 @@ describe 'have_a_valid_cert matcher' do
 
   it 'provides a good error message if the request times out' do
     expect {
-      'www.myapp.com'.should have_a_valid_cert
+      expect('www.myapp.com').to have_a_valid_cert
     }.to fail_matching(/(timeout)|(execution expired)/)
   end
 end

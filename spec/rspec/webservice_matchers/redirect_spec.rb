@@ -41,15 +41,15 @@ end
 
 describe 'redirect_temporarily_to' do
   it 'passes when it gets a 302' do
-    'http://temp-redirector.org'.should redirect_temporarily_to 'http://a-page.com/a/page.txt'
+    expect('http://temp-redirector.org').to redirect_temporarily_to 'http://a-page.com/a/page.txt'
   end
 
   it 'handles domain names gracefully' do
-    'temp-redirector.org'.should redirect_temporarily_to 'a-page.com/a/page.txt'
+    expect('temp-redirector.org').to redirect_temporarily_to 'a-page.com/a/page.txt'
   end
 
   it 'passes when it gets a 307' do
-    'temp-307-redirector.net'.should redirect_temporarily_to 'a-page.com/a/page.txt'
+    expect('temp-307-redirector.net').to redirect_temporarily_to 'a-page.com/a/page.txt'
   end
 
   it 'gives a good error message for the wrong redirect type' do
