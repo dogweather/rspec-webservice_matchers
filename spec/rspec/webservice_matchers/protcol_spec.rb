@@ -3,19 +3,19 @@ require 'rspec/webservice_matchers'
 
 describe 'be_status' do
   it 'can check 200 for successful resource requests' do
-    'http://a-page.com/a/page.txt'.should be_status 200
+    expect('http://a-page.com/a/page.txt').to be_status 200
   end
 
   it 'handles domain names as well as URLs' do
-    'www.website.com'.should be_status 200
+    expect('www.website.com').to be_status 200
   end
 
   it 'accepts status code in text form too' do
-    'www.website.com'.should be_status '200'
+    expect('www.website.com').to be_status '200'
   end
 
   it 'can check for the 503 - Service Unavailable status' do
-    'http://outoforder.com/'.should be_status 503
+    expect('http://outoforder.com/').to be_status 503
   end
 
   it 'can check for 404' do
@@ -29,22 +29,22 @@ describe 'be_status' do
   end
 
   it 'succeeds even if the site times out on the first try' do
-    'http://www.timeout-once.com'.should be_status 200
+    expect('http://www.timeout-once.com').to be_status 200
   end
 end
 
 describe 'be_up' do
   it 'follows redirects when necessary' do
-    'perm-redirector.com'.should be_up
-    'temp-redirector.org'.should be_up
+    expect('perm-redirector.com').to be_up
+    expect('temp-redirector.org').to be_up
   end
 
   it 'can also handle a simple 200' do
-    'http://www.website.com/'.should be_up
+    expect('http://www.website.com/').to be_up
   end
 
   it 'is available via a public API' do
-    RSpec::WebserviceMatchers.up?('http://www.website.com/').should be true
+    expect(RSpec::WebserviceMatchers.up?('http://www.website.com/')).to be true
   end
 
   it 'gives relevant error output' do
@@ -54,6 +54,6 @@ describe 'be_up' do
   end
 
   it 'succeeds even if the site times out on the first try' do
-    'http://www.timeout-once.com'.should be_up
+    expect('http://www.timeout-once.com').to be_up
   end
 end

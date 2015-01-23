@@ -26,7 +26,7 @@ module RSpec
         end
       end
 
-      failure_message_for_should do
+      failure_message do
         error_message
       end
     end
@@ -49,7 +49,7 @@ module RSpec
         end
       end
 
-      failure_message_for_should do
+      failure_message do
         if !error_message.nil?
           error_message
         else
@@ -87,7 +87,7 @@ module RSpec
         end
       end
 
-      failure_message_for_should do
+      failure_message do
         if !error_message.nil?
           error_message
         else
@@ -132,7 +132,7 @@ module RSpec
 
       # Create a compound error message listing all of the
       # relevant actual values received.
-      failure_message_for_should do
+      failure_message do
         if !error_msg.nil?
           error_msg
         else
@@ -165,7 +165,7 @@ module RSpec
         actual_code   == expected_code
       end
 
-      failure_message_for_should do
+      failure_message do
         "Received status #{actual_code}"
       end
     end
@@ -183,7 +183,7 @@ module RSpec
         actual_status == 200
       end
 
-      failure_message_for_should do
+      failure_message do
         "Received status #{actual_status}"
       end
     end
