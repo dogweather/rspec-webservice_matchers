@@ -1,5 +1,6 @@
 require 'spec_helper'
 require 'rspec/webservice_matchers'
+require 'rspec/webservice_matchers/util'
 
 describe 'be_status' do
   it 'can check 200 for successful resource requests' do
@@ -44,7 +45,7 @@ describe 'be_up' do
   end
 
   it 'is available via a public API' do
-    expect(RSpec::WebserviceMatchers.up?('http://www.website.com/')).to be true
+    expect(RSpec::WebserviceMatchers::Util.up?('http://www.website.com/')).to be true
   end
 
   it 'gives relevant error output' do
