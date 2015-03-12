@@ -8,42 +8,44 @@ module RSpec
     # 2. to an https url
     # 3. which is correctly configured
     RSpec::Matchers.define :enforce_https_everywhere do
-      error_msg = status = actual_protocol = actual_valid_cert = nil
+      error_msg = status = final_protocol = has_valid_cert = nil
 
       match do |domain_name|
         begin
-          status, headers = Util.head("http://#{domain_name}")
-          new_url  = headers['location']
-          /^(?<protocol>https?)/ =~ new_url
-          actual_protocol = protocol || nil
-          actual_valid_cert = Util.valid_ssl_cert?(new_url)
-          (status == 301) &&
-            (actual_protocol == 'https') &&
-            (actual_valid_cert == true)
+          status, new_url, final_protocol = get_info(domain_name)
+          meets_expectations?(status, final_protocol, Util.valid_cert?(new_url))
         rescue Faraday::Error::ConnectionFailed
           error_msg = 'Connection failed'
           false
         end
       end
 
+      def get_info(domain_name)
+        status, headers = Util.head(domain_name)
+        location = headers['location']
+        /^(https?)/ =~ location
+        protocol = $1 || nil
+        [status, location, protocol]
+      end
+
+      def meets_expectations?(status, protocol, valid_cert)
+        (status == 301) && (protocol == 'https') && valid_cert
+      end
+
       # Create a compound error message listing all of the
       # relevant actual values received.
       failure_message do
-        if !error_msg.nil?
-          error_msg
-        else
-          mesgs = []
-          if status != 301
-            mesgs << "received status #{status} instead of 301"
-          end
-          if !actual_protocol.nil? && actual_protocol != 'https'
-            mesgs << "destination uses protocol #{actual_protocol.upcase}"
-          end
-          if !actual_valid_cert
-            mesgs << "there's no valid SSL certificate"
-          end
-          mesgs.join('; ').capitalize
+        error_msg || higher_level_errors(status, final_protocol, has_valid_cert)
+      end
+
+      def higher_level_errors(status, protocol, cert_is_valid)
+        mesgs = []
+        mesgs << "received status #{status} instead of 301" if status != 301
+        if !protocol.nil? && protocol != 'https'
+          mesgs << "destination uses protocol #{protocol.upcase}"
         end
+        mesgs << "there's no valid SSL certificate" unless cert_is_valid
+        mesgs.join('; ').capitalize
       end
     end
   end

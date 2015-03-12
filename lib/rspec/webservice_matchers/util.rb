@@ -30,7 +30,7 @@ module RSpec
         response.status == 200
       end
 
-      def self.valid_ssl_cert?(domain_name_or_url)
+      def self.valid_cert?(domain_name_or_url)
         try_ssl_connection(domain_name_or_url)
         true
       rescue
