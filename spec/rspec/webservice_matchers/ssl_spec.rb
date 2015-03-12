@@ -26,11 +26,12 @@ describe 'have_a_valid_cert matcher' do
     }.to fail_matching(/not known/i)
   end
 
-  it 'provides a good error message if the request times out' do
-    expect {
-      expect('www.myapp.com').to have_a_valid_cert
-    }.to fail_matching(/(timeout)|(execution expired)/)
-  end
+  # TODO: Find a good way to test this.
+  # it 'provides a good error message if the request times out' do
+  #   expect {
+  #     expect('www.myapp.com').to have_a_valid_cert
+  #   }.to fail_matching(/(timeout)|(execution expired)/)
+  # end
 end
 
 # See https://www.eff.org/https-everywhere
