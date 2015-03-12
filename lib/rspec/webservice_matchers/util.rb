@@ -3,9 +3,8 @@ require 'faraday'
 require 'faraday_middleware'
 require 'pry'
 
-# Seconds
-TIMEOUT = 20
-OPEN_TIMEOUT = 20
+TIMEOUT_IN_SECONDS = 20
+OPEN_TIMEOUT_IN_SECONDS = 20
 
 module RSpec
   module WebserviceMatchers
@@ -48,8 +47,8 @@ module RSpec
 
       def self.connection(follow: false)
         Faraday.new do |c|
-          c.options[:timeout] = TIMEOUT
-          c.options[:open_timeout] = OPEN_TIMEOUT
+          c.options[:timeout] = TIMEOUT_IN_SECONDS
+          c.options[:open_timeout] = OPEN_TIMEOUT_IN_SECONDS
           c.use(FaradayMiddleware::FollowRedirects, limit: 4) if follow
           c.adapter :excon
         end
