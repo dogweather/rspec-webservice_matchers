@@ -11,23 +11,11 @@ module RSpec
     module Util
       def self.error_message(errors)
         return errors.message if errors.respond_to?(:message)
-        
+
         errors
           .map(&:to_s)
           .join('; ')
           .capitalize
-      end
-
-      def self.redirect?(status)
-        temp_redirect?(status) || permanent_redirect?(status)
-      end
-
-      def self.temp_redirect?(status)
-        [302, 307].include?(status)
-      end
-
-      def self.permanent_redirect?(status)
-        status == 301
       end
 
       def self.status(url_or_domain_name, follow: false)
