@@ -8,8 +8,16 @@ OPEN_TIMEOUT_IN_SECONDS = 20
 
 module RSpec
   module WebserviceMatchers
-    # Refactored utility functions
     module Util
+      def self.error_message(errors)
+        return errors.message if errors.respond_to?(:message)
+        
+        errors
+          .map(&:to_s)
+          .join('; ')
+          .capitalize
+      end
+
       def self.redirect?(status)
         temp_redirect?(status) || permanent_redirect?(status)
       end
@@ -83,11 +91,9 @@ module RSpec
       end
 
       def self.recheck_on_timeout
-        
         yield
       rescue Faraday::Error::TimeoutError
         yield
-        
       end
     end
   end
