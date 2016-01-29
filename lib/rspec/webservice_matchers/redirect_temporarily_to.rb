@@ -1,11 +1,13 @@
 require 'rspec/webservice_matchers/util'
+require 'rspec/webservice_matchers/redirect_helpers'
 
 module RSpec
   module WebserviceMatchers
+
     module RedirectTemporarilyTo
       # Do we get a 302 or 307 to the place we intend?
       RSpec::Matchers.define :redirect_temporarily_to do |expected|
-        include RSpec
+        include RedirectHelpers
         status = actual_location = exception = nil
 
         match do |url_or_domain_name|
@@ -22,24 +24,8 @@ module RSpec
         end
 
         failure_message do
-          return Util.error_message(exception) if exception
-
-          errors = []
-          if Util.permanent_redirect? status
-            errors << 'received a permanent redirect'
-          end
-          unless expected_location? expected, actual_location
-            errors << "received location #{actual_location}"
-          end
-          unless Util.redirect? status
-            errors << "not a redirect: received status #{status}"
-          end
-
-          Util.error_message(errors)
-        end
-
-        def expected_location?(expected, actual)
-          actual =~ %r{#{expected}/?}
+          redirect_failure_message(exception, status, actual_location,
+                                   kind: :temporary)
         end
       end
     end
