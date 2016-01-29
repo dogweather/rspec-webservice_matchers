@@ -6,16 +6,14 @@ module RSpec
     module RedirectTemporarilyTo
       RSpec::Matchers.define :redirect_temporarily_to do |expected_location|
         include RedirectHelpers
-        which_kind = :temporary
+        kind = :temporary
         status = actual_location = exception = nil
 
         match do |url_or_domain_name|
           begin
             status, actual_location = redirect_result(url_or_domain_name)
-
-            redirect?(status, kind: which_kind) &&
-              locations_match?(expected_location, actual_location)
-          rescue Exception => e
+            redirects_correctly?(status, actual_location, expected_location, kind)
+          rescue Faraday::ConnectionFailed => e
             exception = e
             false
           end
@@ -25,7 +23,7 @@ module RSpec
           redirect_failure_message(exception,
                                    status,
                                    actual_location,
-                                   kind: which_kind)
+                                   kind: kind)
         end
       end
     end
