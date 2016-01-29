@@ -1,5 +1,6 @@
 require 'faraday'
 require 'rspec/webservice_matchers/util'
+require 'rspec/webservice_matchers/redirect_helpers'
 
 module RSpec
   module WebserviceMatchers
@@ -9,6 +10,7 @@ module RSpec
       # 2. to an https url
       # 3. which is correctly configured
       RSpec::Matchers.define :enforce_https_everywhere do
+        include RedirectHelpers
         error_msg = status = final_protocol = has_valid_cert = nil
 
         match do |domain_name|
@@ -30,7 +32,7 @@ module RSpec
         end
 
         def meets_expectations?(status, protocol, valid_cert)
-          (status == 301) && (protocol == 'https') && valid_cert
+          permanent_redirect?(status) && (protocol == 'https') && valid_cert
         end
 
         # Create a compound error message listing all of the
@@ -40,13 +42,15 @@ module RSpec
         end
 
         def higher_level_errors(status, protocol, cert_is_valid)
-          mesgs = []
-          mesgs << "received status #{status} instead of 301" if status != 301
-          if !protocol.nil? && protocol != 'https'
-            mesgs << "destination uses protocol #{protocol.upcase}"
+          errors = []
+          unless permanent_redirect?(status)
+            errors << "received status #{status} instead of 301"
           end
-          mesgs << "there's no valid SSL certificate" unless cert_is_valid
-          mesgs.join('; ').capitalize
+          if protocol && (protocol != 'https')
+            errors << "destination uses protocol #{protocol.upcase}"
+          end
+          errors << "there's no valid SSL certificate" unless cert_is_valid
+          Util.error_message(errors)
         end
       end
     end
