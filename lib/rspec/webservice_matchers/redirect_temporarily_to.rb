@@ -6,36 +6,40 @@ module RSpec
       # Do we get a 302 or 307 to the place we intend?
       RSpec::Matchers.define :redirect_temporarily_to do |expected|
         include RSpec
-        error_message = status = actual_location = nil
+        status = actual_location = exception = nil
 
         match do |url_or_domain_name|
           begin
             status, headers = Util.head(url_or_domain_name)
             actual_location = headers['location']
 
-            [302, 307].include?(status) && (/#{expected}\/?/ =~ actual_location)
+            Util.temp_redirect?(status) &&
+              expected_location?(expected, actual_location)
           rescue Exception => e
-            error_message = e.message
+            exception = e
             false
           end
         end
 
         failure_message do
-          if !error_message.nil?
-            error_message
-          else
-            mesgs = []
-            if status == 301
-              mesgs << "received a permanent redirect, status #{status}"
-            end
-            if !actual_location.nil? && ! (%r|#{expected}/?| === actual_location)
-              mesgs << "received location #{actual_location}"
-            end
-            if ![301, 302, 307].include? status
-              mesgs << "not a redirect: received status #{status}"
-            end
-            mesgs.join('; ').capitalize
+          return Util.error_message(exception) if exception
+
+          errors = []
+          if Util.permanent_redirect? status
+            errors << 'received a permanent redirect'
           end
+          unless expected_location? expected, actual_location
+            errors << "received location #{actual_location}"
+          end
+          unless Util.redirect? status
+            errors << "not a redirect: received status #{status}"
+          end
+
+          Util.error_message(errors)
+        end
+
+        def expected_location?(expected, actual)
+          actual =~ %r{#{expected}/?}
         end
       end
     end
