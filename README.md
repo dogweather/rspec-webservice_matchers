@@ -1,6 +1,6 @@
 # RSpec::WebserviceMatchers
 
-[![Gem Version](https://badge.fury.io/rb/rspec-webservice_matchers.png)](http://badge.fury.io/rb/rspec-webservice_matchers) [![Build Status](https://travis-ci.org/dogweather/rspec-webservice_matchers.png?branch=master)](https://travis-ci.org/dogweather/rspec-webservice_matchers) [![Code Climate](https://codeclimate.com/github/dogweather/rspec-webservice_matchers.png)](https://codeclimate.com/github/dogweather/rspec-webservice_matchers)
+[![Gem Version](https://badge.fury.io/rb/rspec-webservice_matchers.png)](http://badge.fury.io/rb/rspec-webservice_matchers)  [![Code Climate](https://codeclimate.com/github/dogweather/rspec-webservice_matchers.png)](https://codeclimate.com/github/dogweather/rspec-webservice_matchers)
 
 
 A [gem](https://rubygems.org/gems/rspec-webservice_matchers) to black-box test a web server configuration. For example, whether a site's SSL certificate is correctly configured and not expired. It's a tool for doing **Test Driven Devops** (I just made that up). See [the introductory blog post](http://robb.weblaws.org/2014/01/16/new-open-source-library-for-test-driven-devops/) for more about my motivations.
@@ -36,7 +36,7 @@ Here's an example which uses them all:
 ```Ruby
 require 'rspec/webservice_matchers'
 
-describe 'My app' do 
+describe 'My app' do
   context 'www.myapp.com' do
     it { should be_up }
     it { should have_a_valid_cert }
@@ -60,5 +60,3 @@ Related Projects
 ----------------
 * [serverspec](http://serverspec.org)
 * [HTTP Assertions](https://github.com/dogweather/HTTP-Assertions): A precusor to this library. Written in the older test case / assert style.
-
-

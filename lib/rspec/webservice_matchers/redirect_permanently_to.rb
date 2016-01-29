@@ -5,6 +5,7 @@ module RSpec
     module RedirectPermanentlyTo
       # Do we get a 301 to the place we intend?
       RSpec::Matchers.define :redirect_permanently_to do |expected|
+        include RSpec
         exception = status = actual_location = nil
 
         match do |url_or_domain_name|
