@@ -4,9 +4,9 @@ require 'rspec/webservice_matchers/redirect_helpers'
 module RSpec
   module WebserviceMatchers
     module RedirectPermanentlyTo
-      # Do we get a 301 to the place we intend?
       RSpec::Matchers.define :redirect_permanently_to do |expected_location|
         include RedirectHelpers
+        which_kind = :permanent
         status = actual_location = exception = nil
 
         match do |url_or_domain_name|
@@ -14,7 +14,7 @@ module RSpec
             status, headers = Util.head(url_or_domain_name)
             actual_location = headers['location']
 
-            permanent_redirect?(status) &&
+            redirect?(status, kind: which_kind) &&
               locations_match?(expected_location, actual_location)
           rescue Exception => e
             exception = e
@@ -26,7 +26,7 @@ module RSpec
           redirect_failure_message(exception,
                                    status,
                                    actual_location,
-                                   kind: :permanent)
+                                   kind: which_kind)
         end
       end
     end
