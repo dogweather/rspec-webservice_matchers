@@ -11,8 +11,7 @@ module RSpec
 
         match do |url_or_domain_name|
           begin
-            status, headers = Util.head(url_or_domain_name)
-            actual_location = headers['location']
+            status, actual_location = redirect_result(url_or_domain_name)
 
             redirect?(status, kind: which_kind) &&
               locations_match?(expected_location, actual_location)

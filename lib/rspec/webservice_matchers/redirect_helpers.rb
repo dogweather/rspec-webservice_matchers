@@ -20,6 +20,11 @@ module RSpec
         Util.error_message(errors)
       end
 
+      def redirect_result(url_or_domain_name)
+        status, headers = Util.head(url_or_domain_name)
+        [status, headers['location']]
+      end
+
       def locations_match?(expected, actual)
         actual =~ %r{#{expected}/?}
       end
