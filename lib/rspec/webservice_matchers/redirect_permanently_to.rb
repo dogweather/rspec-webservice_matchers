@@ -6,7 +6,7 @@ module RSpec
       # Do we get a 301 to the place we intend?
       RSpec::Matchers.define :redirect_permanently_to do |expected|
         include RSpec
-        exception = status = actual_location = nil
+        status = actual_location = exception = nil
 
         match do |url_or_domain_name|
           begin
@@ -34,6 +34,7 @@ module RSpec
           unless Util.redirect? status
             errors << "not a redirect: received status #{status}"
           end
+
           Util.error_message(errors)
         end
 
