@@ -3,7 +3,7 @@ require 'rspec/webservice_matchers/util'
 module RSpec
   module WebserviceMatchers
     module RedirectHelpers
-      def redirect_failure_message(exception, status, actual_location, kind:)
+      def redirect_failure_message(exception, status, actual_location, kind)
         return Util.error_message(exception) if exception
 
         errors = []

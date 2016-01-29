@@ -20,10 +20,7 @@ module RSpec
         end
 
         failure_message do
-          redirect_failure_message(exception,
-                                   status,
-                                   actual_location,
-                                   kind: kind)
+          redirect_failure_message(exception, status, actual_location, kind)
         end
       end
     end
