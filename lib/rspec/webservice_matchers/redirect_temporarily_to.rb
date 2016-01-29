@@ -21,21 +21,19 @@ module RSpec
         end
 
         failure_message do
-          if !error_message.nil?
-            error_message
-          else
-            mesgs = []
-            if Util.permanent_redirect? status
-              mesgs << 'received a permanent redirect'
-            end
-            unless expected_location? expected, actual_location
-              mesgs << "received location #{actual_location}"
-            end
-            unless Util.redirect? status
-              mesgs << "not a redirect: received status #{status}"
-            end
-            mesgs.join('; ').capitalize
+          return error_message if error_message
+
+          error_mesgs = []
+          if Util.permanent_redirect? status
+            error_mesgs << 'received a permanent redirect'
           end
+          unless expected_location? expected, actual_location
+            error_mesgs << "received location #{actual_location}"
+          end
+          unless Util.redirect? status
+            error_mesgs << "not a redirect: received status #{status}"
+          end
+          error_mesgs.join('; ').capitalize
         end
 
         def expected_location?(expected, actual)
