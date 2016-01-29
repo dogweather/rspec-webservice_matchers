@@ -15,7 +15,7 @@ module RSpec
             actual_location = headers['location']
 
             temp_redirect?(status) &&
-              expected_location?(expected_location, actual_location)
+              locations_match?(expected_location, actual_location)
           rescue Exception => e
             exception = e
             false

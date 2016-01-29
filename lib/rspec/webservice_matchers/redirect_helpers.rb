@@ -10,7 +10,7 @@ module RSpec
         unless redirect? status, kind: kind
           errors << "received a #{kind_for(status)} redirect"
         end
-        unless expected_location? expected, actual_location
+        unless locations_match? expected, actual_location
           errors << "received location #{actual_location}"
         end
         unless redirect? status
@@ -20,7 +20,7 @@ module RSpec
         Util.error_message(errors)
       end
 
-      def expected_location?(expected, actual)
+      def locations_match?(expected, actual)
         actual =~ %r{#{expected}/?}
       end
 
