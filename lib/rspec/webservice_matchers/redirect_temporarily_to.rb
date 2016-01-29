@@ -13,7 +13,7 @@ module RSpec
             status, headers = Util.head(url_or_domain_name)
             actual_location = headers['location']
 
-            temp_redirect?(status) && (%r{#{expected}/?} =~ actual_location)
+            Util.temp_redirect?(status) && expected_location?(expected, actual_location)
           rescue Exception => e
             error_message = e.message
             false
@@ -25,25 +25,21 @@ module RSpec
             error_message
           else
             mesgs = []
-            if status == 301
-              mesgs << "received a permanent redirect, status #{status}"
+            if Util.permanent_redirect? status
+              mesgs << 'received a permanent redirect'
             end
-            if !actual_location.nil? && ! (%r{#{expected}/?} === actual_location)
+            unless expected_location? expected, actual_location
               mesgs << "received location #{actual_location}"
             end
-            unless redirect? status
+            unless Util.redirect? status
               mesgs << "not a redirect: received status #{status}"
             end
             mesgs.join('; ').capitalize
           end
         end
 
-        def temp_redirect?(status)
-          [302, 307].include?(status)
-        end
-
-        def redirect?(status)
-          [301, 302, 307].include? status
+        def expected_location?(expected, actual)
+          actual =~ %r{#{expected}/?}
         end
       end
     end
