@@ -1,3 +1,5 @@
+require 'rspec/webservice_matchers/util'
+
 module RSpec
   module WebserviceMatchers
     module RedirectHelpers
@@ -5,13 +7,13 @@ module RSpec
         return Util.error_message(exception) if exception
 
         errors = []
-        if Util.permanent_redirect? status
-          errors << 'received a permanent redirect'
+        unless redirect? status, kind: kind
+          errors << "received a #{kind_for(status)} redirect"
         end
         unless expected_location? expected, actual_location
           errors << "received location #{actual_location}"
         end
-        unless Util.redirect? status
+        unless redirect? status
           errors << "not a redirect: received status #{status}"
         end
 
@@ -22,8 +24,15 @@ module RSpec
         actual =~ %r{#{expected}/?}
       end
 
-      def redirect?(status)
-        temp_redirect?(status) || permanent_redirect?(status)
+      def redirect?(status, kind: nil)
+        case kind
+        when :permanent
+          permanent_redirect?(status)
+        when :temporary
+          temp_redirect?(status)
+        else
+          temp_redirect?(status) || permanent_redirect?(status)
+        end
       end
 
       def temp_redirect?(status)
@@ -32,6 +41,14 @@ module RSpec
 
       def permanent_redirect?(status)
         status == 301
+      end
+
+      def kind_for(status)
+        {
+          301 => 'permanent',
+          302 => 'temporary',
+          307 => 'temporary'
+        }[status]
       end
     end
   end
