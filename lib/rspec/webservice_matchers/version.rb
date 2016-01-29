@@ -1,5 +1,5 @@
 module RSpec
   module WebserviceMatchers
-    VERSION = '4.0.2'
+    VERSION = '4.1.0'
   end
 end
