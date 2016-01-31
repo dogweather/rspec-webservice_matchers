@@ -3,8 +3,7 @@ require 'rspec/webservice_matchers/util'
 module RSpec
   module WebserviceMatchers
     module BeUp
-      # Pass when the response code is 200, following redirects
-      # if necessary.
+      # Pass when the response code is 200, following redirects if necessary.
       RSpec::Matchers.define :be_up do
         status = nil
 

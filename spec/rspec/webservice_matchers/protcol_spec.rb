@@ -51,7 +51,7 @@ describe 'be_up' do
   it 'gives relevant error output' do
     expect {
       expect('http://notfound.com/no.txt').to be_up
-    }.to fail_matching(/404/)
+    }.to fail_matching(/^received status 404$/i)
   end
 
   it 'succeeds even if the site times out on the first try' do

@@ -7,13 +7,14 @@ module RSpec
         return Util.error_message(exception) if exception
 
         errors = []
-        unless redirect? status, kind: kind
-          errors << "received a #{kind_for(status)} redirect"
-        end
-        unless locations_match? expected, actual_location
-          errors << "received location #{actual_location}"
-        end
-        unless redirect? status
+        if redirect? status
+          unless redirect? status, kind: kind
+            errors << "received a #{kind_for(status)} redirect"
+          end
+          unless locations_match? expected, actual_location
+            errors << "received location #{actual_location}"
+          end
+        else
           errors << "not a redirect: received status #{status}"
         end
 
