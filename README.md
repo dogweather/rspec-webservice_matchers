@@ -13,7 +13,7 @@ It's a tool for doing **Test Driven Devops** (I just made that up). See [the int
 
 This library takes a minimalist approach: it simply adds new RSpec matchers. Therefore, you can use your own RSpec writing style; there's no new DSL to learn.
 
-If you're too busy to install this and code the tests by hand, you can try the [new hosted service which runs RSpec in the cloud](http://nonstop.qa).
+If you're too busy to install this and code the tests by hand, you can try the [new hosted service which runs these RSpec matchers in the cloud](http://nonstop.qa).
 
 
 Installation
