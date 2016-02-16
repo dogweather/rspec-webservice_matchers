@@ -21,8 +21,8 @@ module RSpec
         end
 
         # Excon is failing on SSL when a 302 (and possibly others) is received.
-        # We _should_ be able to verify the SSL cert even though it's not a
-        # 200. HTTPie and Curl are able to do it.
+        # We should be able to verify the SSL cert even though it's not a
+        # 200. HTTPie and Curl are able to.
         # See https://github.com/excon/excon/issues/546
         def fix_for_excon_bug(error_message)
           return error_message unless buggy_excon_message?(error_message)
