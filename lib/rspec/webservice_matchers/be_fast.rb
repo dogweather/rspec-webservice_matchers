@@ -34,7 +34,7 @@ module RSpec
         end
 
         failure_message do
-          "PageSpeed score is #{score}. Score must be 90 or greater."
+          "PageSpeed score is #{score}/100."
         end
       end
     end

@@ -27,7 +27,7 @@ describe RSpec::WebserviceMatchers::BeFast do
 
       expect {
         expect('nonstop.qa').not_to be_fast
-      }.to raise_error(RuntimeError, /API keyx/)
+      }.to raise_error(RuntimeError, /API key/)
 
       # Replace the key
       ENV['WEBSERVICE_MATCHER_INSIGHTS_KEY'] = key
