@@ -19,5 +19,18 @@ describe RSpec::WebserviceMatchers::BeFast do
     it 'performs a Google PageSpeed Insights API query on a slow site' do
       expect('nonstop.qa').not_to be_fast
     end
+
+    it 'raises a friendly error if the api key has not been set' do
+      # Remove the key
+      key = ENV['WEBSERVICE_MATCHER_INSIGHTS_KEY']
+      ENV['WEBSERVICE_MATCHER_INSIGHTS_KEY'] = nil
+
+      expect {
+        expect('nonstop.qa').not_to be_fast
+      }.to raise_error(RuntimeError, /API keyx/)
+
+      # Replace the key
+      ENV['WEBSERVICE_MATCHER_INSIGHTS_KEY'] = key
+    end
   end
 end
