@@ -29,7 +29,7 @@ These new RSpec matchers:
                                | Notes
 -------------------------------|------------------------------------------------
 **be_up**                      | Looks for a 200, but will follow up to four redirects
-**be_fast**                    | Checks for Google PageSpeed score >= 90. Requires a Google website API key in the env variable `WEBSERVICE_MATCHER_INSIGHTS_KEY`.
+**be_fast**                    | Checks for Google PageSpeed score >= 90. Requires a [Google website API key](https://developers.google.com/speed/docs/insights/v2/getting-started) in the environment variable `WEBSERVICE_MATCHER_INSIGHTS_KEY`.
 **enforce_https_everywhere**   | Passes if the site will _only_ allow SSL connections. See the [EFF project, HTTPS Everywhere](https://www.eff.org/https-everywhere)
 **have_a_valid_cert**          | Will fail if there's no cert, or it's expired or incorrectly configured
 **be_status**                  | A low-level matcher to explicitly check for a 200, 503, or any other code
