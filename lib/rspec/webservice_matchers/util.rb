@@ -1,7 +1,6 @@
 require 'excon'
 require 'faraday'
 require 'faraday_middleware'
-require 'pry'
 
 TIMEOUT_IN_SECONDS = 20
 OPEN_TIMEOUT_IN_SECONDS = 20
