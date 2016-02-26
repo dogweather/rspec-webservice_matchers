@@ -18,7 +18,20 @@ RSpec.configure do |config|
 
     # Timeout scenarios
     WebMock.stub_request(:any, 'www.timeout.com').to_timeout
-    WebMock.stub_request(:any, 'www.timeout-once.com').to_timeout.then.to_return({body: 'abc'})
+    WebMock.stub_request(:any, 'www.timeout-once.com').to_timeout.then.to_return(body: 'abc')
+
+    # Insights API
+    key = ENV['WEBSERVICE_MATCHER_INSIGHTS_KEY']
+    WebMock.stub_request(:get, "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?key=#{key}&screenshot=false&url=http://nonstop.qa")
+      .with(headers:
+        {
+          'Host' => 'www.googleapis.com:443',
+          'User-Agent' => 'excon/0.45.4'
+        })
+      .to_return(
+        status: 200,
+        body: IO.read('spec/fixtures/pagespeed.json'),
+        headers: {})
 
     WebMock.allow_net_connect!
   end

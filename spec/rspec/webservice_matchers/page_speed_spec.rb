@@ -14,4 +14,10 @@ describe RSpec::WebserviceMatchers::BeFast do
       expect(data[:score]).to eq(85)
     end
   end
+
+  describe '#be_fast' do
+    it 'performs a Google PageSpeed Insights API query on a slow site' do
+      expect('nonstop.qa').not_to be_fast
+    end
+  end
 end
