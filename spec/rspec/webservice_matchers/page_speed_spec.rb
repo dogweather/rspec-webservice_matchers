@@ -6,12 +6,6 @@ require 'rspec/webservice_matchers/util'
 
 SAMPLE_JSON_RESPONSE = 'spec/fixtures/pagespeed.json'
 
-describe 'be_fast' do
-  it 'is in a module which is loaded' do
-    expect(RSpec::WebserviceMatchers::BeFast).not_to be_nil
-  end
-end
-
 describe RSpec::WebserviceMatchers::BeFast do
   describe '#parse' do
     it 'can parse the overall score' do

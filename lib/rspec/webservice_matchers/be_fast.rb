@@ -1,8 +1,16 @@
+require 'json'
 require 'rspec/webservice_matchers/util'
 
 module RSpec
   module WebserviceMatchers
     module BeFast
+      def self.parse(json:)
+        response = JSON.parse(json)
+        {
+          score: response['ruleGroups']['SPEED']['score']
+        }
+      end
+
       RSpec::Matchers.define :be_score do
         score = nil
 
