@@ -67,7 +67,7 @@ module RSpec
           c.options[:timeout] = TIMEOUT_IN_SECONDS
           c.options[:open_timeout] = OPEN_TIMEOUT_IN_SECONDS
           c.use(FaradayMiddleware::FollowRedirects, limit: 4) if follow
-          c.adapter :excon
+          c.adapter :net_http
         end
       end
 
