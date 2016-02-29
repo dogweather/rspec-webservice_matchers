@@ -25,12 +25,12 @@ module RSpec
         # 200. HTTPie and Curl are able to.
         # See https://github.com/excon/excon/issues/546
         def fix_for_excon_bug(error_message)
-          return error_message unless buggy_excon_message?(error_message)
+          return error_message unless buggy_message?(error_message)
           'Unable to verify the certificate because a redirect was detected'
         end
 
-        def buggy_excon_message?(text)
-          text =~ /Unable to verify certificate, please/
+        def buggy_message?(text)
+          text =~ /Unable to verify|verify failed/
         end
       end
     end
