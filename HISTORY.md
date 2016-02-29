@@ -1,6 +1,6 @@
 4.4.1
 -----
-Reduced the timeouts to 10 seconds.
+Reduced the timeouts to 5 seconds.
 
 4.4.0
 -----
