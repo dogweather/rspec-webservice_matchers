@@ -2,8 +2,8 @@ require 'excon'
 require 'faraday'
 require 'faraday_middleware'
 
-TIMEOUT_IN_SECONDS = 20
-OPEN_TIMEOUT_IN_SECONDS = 20
+TIMEOUT_IN_SECONDS      = 10
+OPEN_TIMEOUT_IN_SECONDS = 10
 
 module RSpec
   module WebserviceMatchers
