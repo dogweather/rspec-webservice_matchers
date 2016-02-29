@@ -18,12 +18,20 @@ module RSpec
       end
 
       def self.status(url_or_domain_name, follow: false)
-        head(url_or_domain_name, follow: follow)[0]
+        code = head(url_or_domain_name, follow: follow)[0]
+        return code if code != 405
+        get(url_or_domain_name, follow: follow)[0]
       end
 
       def self.head(url_or_domain_name, follow: false)
         url = make_url(url_or_domain_name)
         response = recheck_on_timeout { connection(follow: follow).head(url) }
+        [response.status, response.headers]
+      end
+
+      def self.get(url_or_domain_name, follow: false)
+        url = make_url(url_or_domain_name)
+        response = recheck_on_timeout { connection(follow: follow).get(url) }
         [response.status, response.headers]
       end
 

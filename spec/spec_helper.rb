@@ -7,6 +7,10 @@ RSpec.configure do |config|
     WebMock.stub_request(:any, /notfound.com/).to_return(status: 404)
     WebMock.stub_request(:any, 'outoforder.com').to_return(status: 503)
 
+    # A host which doesn't support HEAD
+    WebMock.stub_request(:head, 'appengine.com').to_return(status: 405)
+    WebMock.stub_request(:get,  'appengine.com').to_return(status: 200)
+
     WebMock.stub_request(:any, 'perm-redirector.com')
       .to_return(status: 301, headers: { Location: 'http://www.website.com/' })
 

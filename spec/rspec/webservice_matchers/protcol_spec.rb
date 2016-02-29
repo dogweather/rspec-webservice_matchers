@@ -32,6 +32,10 @@ describe 'be_status' do
   it 'succeeds even if the site times out on the first try' do
     expect('http://www.timeout-once.com').to be_status 200
   end
+
+  it 'works on hosts which do not support HEAD' do
+    expect('http://appengine.com').to be_status 200
+  end
 end
 
 describe 'be_up' do
