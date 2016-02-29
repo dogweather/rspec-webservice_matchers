@@ -49,7 +49,8 @@ describe 'be_up' do
   end
 
   it 'is available via a public API' do
-    expect(RSpec::WebserviceMatchers::Util.up?('http://www.website.com/')).to be true
+    status = RSpec::WebserviceMatchers::Util.up?('http://www.website.com/')
+    expect(status).to be true
   end
 
   it 'gives relevant error output' do
@@ -60,5 +61,9 @@ describe 'be_up' do
 
   it 'succeeds even if the site times out on the first try' do
     expect('http://www.timeout-once.com').to be_up
+  end
+
+  it 'works on cars.com' do
+    expect('http://cars.com').to be_up
   end
 end
