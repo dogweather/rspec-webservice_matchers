@@ -24,14 +24,16 @@ module RSpec
       end
 
       def self.head(url_or_domain_name, follow: false)
-        url = make_url(url_or_domain_name)
-        response = recheck_on_timeout { connection(follow: follow).head(url) }
-        [response.status, response.headers]
+        request(:head, url_or_domain_name, follow: follow)
       end
 
       def self.get(url_or_domain_name, follow: false)
+        request(:get, url_or_domain_name, follow: follow)
+      end
+
+      def self.request(method, url_or_domain_name, follow: false)
         url = make_url(url_or_domain_name)
-        response = recheck_on_timeout { connection(follow: follow).get(url) }
+        response = recheck_on_timeout { connection(follow: follow).send(method, url) }
         [response.status, response.headers]
       end
 
