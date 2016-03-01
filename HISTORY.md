@@ -1,3 +1,8 @@
+4.4.3
+-----
+Changed the Google PageSpeed Insights threshold to 85, the value for
+"performing well": https://developers.google.com/speed/docs/insights/about
+
 4.4.2
 -----
 Bug fix for `http://cars.com`. Using net-http now for most operations. Excon
