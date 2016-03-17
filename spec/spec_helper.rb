@@ -26,12 +26,8 @@ RSpec.configure do |config|
 
     # Insights API
     key = ENV['WEBSERVICE_MATCHER_INSIGHTS_KEY']
-    WebMock.stub_request(:get, "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?key=#{key}&screenshot=false&url=http://nonstop.qa")
-      .with(headers:
-        {
-          'Host' => 'www.googleapis.com:443',
-          'User-Agent' => 'excon/0.45.4'
-        })
+    WebMock.stub_request(:get, "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?key=#{key}&screenshot=false&url=http://nonstop.qa").
+         with(:headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent'=>'Faraday v0.9.2'})
       .to_return(
         status: 200,
         body: IO.read('spec/fixtures/pagespeed.json'),

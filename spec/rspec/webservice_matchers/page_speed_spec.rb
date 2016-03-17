@@ -16,8 +16,8 @@ describe RSpec::WebserviceMatchers::BeFast do
   end
 
   describe '#be_fast' do
-    it 'performs a Google PageSpeed Insights API query on a slow site' do
-      expect('nonstop.qa').not_to be_fast
+    it 'performs a Google PageSpeed Insights API query on a fast site' do
+      expect('nonstop.qa').to be_fast
     end
 
     it 'raises a friendly error if the api key has not been set' do

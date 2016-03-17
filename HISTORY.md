@@ -1,3 +1,7 @@
+4.5.0
+-----
+Removed the Excon dependency entirely.
+
 4.4.3
 -----
 Changed the Google PageSpeed Insights threshold to 85, the value for

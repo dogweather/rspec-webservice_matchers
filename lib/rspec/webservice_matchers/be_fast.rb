@@ -7,22 +7,25 @@ module RSpec
     module BeFast
       def self.parse(json:)
         response = JSON.parse(json)
-        {
-          score: response['ruleGroups']['SPEED']['score']
-        }
+        unless response.key?('ruleGroups')
+          raise "Couldn't parse the PageSpeed response: #{response.inspect}"
+        end
+        score = response.fetch('ruleGroups').fetch('SPEED').fetch('score')
+        { score: score }
       end
 
       def self.page_speed_score(url:)
         url_param = CGI.escape(Util.make_url(url))
         key       = ENV['WEBSERVICE_MATCHER_INSIGHTS_KEY']
         if key.nil?
-          fail 'be_fast requires the WEBSERVICE_MATCHER_INSIGHTS_KEY '\
-               'environment variable to be set to a Google PageSpeed '\
-               'Insights API key.'
+          raise 'be_fast requires the WEBSERVICE_MATCHER_INSIGHTS_KEY '\
+                'environment variable to be set to a Google PageSpeed '\
+                'Insights API key.'
         end
         endpoint  = 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed'
         api_url   = "#{endpoint}?url=#{url_param}&screenshot=false&key=#{key}"
-        BeFast.parse(json: Excon.get(api_url).body)[:score]
+        response = Faraday.get(api_url)
+        BeFast.parse(json: response.body).fetch(:score)
       end
 
       RSpec::Matchers.define :be_fast do
