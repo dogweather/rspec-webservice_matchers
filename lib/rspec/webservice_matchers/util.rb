@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'faraday'
 require 'faraday_middleware'
 
@@ -59,7 +60,7 @@ module RSpec
         true
       end
 
-      private
+      # private
 
       def self.connection(follow: false)
         Faraday.new do |c|

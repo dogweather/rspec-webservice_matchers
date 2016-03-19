@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'rspec/webservice_matchers/have_a_valid_cert'
 require 'rspec/webservice_matchers/redirect_permanently_to'
 require 'rspec/webservice_matchers/redirect_temporarily_to'

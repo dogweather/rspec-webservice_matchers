@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'spec_helper'
 require 'rspec/webservice_matchers'
 
@@ -11,7 +12,7 @@ describe 'have_a_valid_cert matcher' do
   it 'fails if the server is not serving SSL at all' do
     expect {
       expect('www.psu.edu').to have_a_valid_cert
-    }.to fail
+    }.to fail_matching(/443/)
   end
 
   it 'provides a relevant error message' do

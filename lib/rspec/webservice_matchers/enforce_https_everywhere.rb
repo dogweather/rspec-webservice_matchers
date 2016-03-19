@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'faraday'
 require 'rspec/webservice_matchers/util'
 require 'rspec/webservice_matchers/redirect_helpers'
@@ -27,7 +28,7 @@ module RSpec
           status, headers = Util.head(domain_name)
           location = headers['location']
           /^(https?)/ =~ location
-          protocol = $1 || nil
+          protocol = Regexp.last_match(1) || nil
           [status, location, protocol]
         end
 

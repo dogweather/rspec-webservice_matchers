@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Specs for all of the PageSpeed code and matchers.
 
 require 'spec_helper'

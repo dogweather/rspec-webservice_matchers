@@ -1,3 +1,8 @@
+4.6.0
+-----
+Added `# frozen_string_literal: true` to all ruby files using `rubocop -a`,
+in order to prepare for Ruby 3, and to reduce memory use.
+
 4.5.0
 -----
 Removed the Excon dependency entirely.

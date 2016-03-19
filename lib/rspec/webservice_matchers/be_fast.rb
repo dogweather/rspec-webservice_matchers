@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'cgi'
 require 'json'
 require 'rspec/webservice_matchers/util'
