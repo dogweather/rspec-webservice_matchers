@@ -12,6 +12,7 @@ module RSpec
         alias success? success
 
         validates :success, presence: true
+        validates :status_code, presence: true
       end
 
 
