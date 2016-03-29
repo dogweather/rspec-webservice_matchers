@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 require 'rspec/webservice_matchers/util'
+require 'validated_object'
 
 # Pass when the response code is 200, following redirects if necessary.
 module RSpec
   module WebserviceMatchers
     module BeUp
 
-      class TestResult
-        attr_reader :success, :status_code
+      class TestResult < ValidatedObject::Base
+        attr_accessor :success, :status_code
         alias success? success
+
+        validates :success, presence: true
       end
 
 
@@ -24,7 +27,7 @@ module RSpec
           "Received status #{status}"
         end
       end
-      
+
     end
   end
 end
