@@ -16,9 +16,11 @@ module RSpec
       end
 
 
-      def self.test(url:)
+      def self.test(url:nil, domain:nil)
+        raise 'Must specify a url or domain' if url.nil? && domain.nil?
+        
         TestResult.new do |r|
-          r.status_code = Util.status(url, follow: true)
+          r.status_code = Util.status(url || domain, follow: true)
           r.success =     (r.status_code == 200)
         end
       end
@@ -28,8 +30,9 @@ module RSpec
         status = nil
 
         match do |url_or_domain_name|
-          status = Util.status(url_or_domain_name, follow: true)
-          status == 200
+          result = BeUp.test(url: url_or_domain_name)
+          status = result.status_code
+          result.success?
         end
 
         failure_message do
