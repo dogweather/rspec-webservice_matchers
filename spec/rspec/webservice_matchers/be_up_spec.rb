@@ -43,12 +43,29 @@ describe TestResult do
     }.to raise_error(ArgumentError)
   end
 
-  it 'cannot status be < 100' do
+  it 'cannot have status < 100' do
     expect {
       TestResult.new do |r|
         r.status_code = -5
         r.success = false
       end
     }.to raise_error(ArgumentError)
+  end
+
+  it 'cannot have status > 510' do
+    expect {
+      TestResult.new do |r|
+        r.status_code = 511
+        r.success = false
+      end
+    }.to raise_error(ArgumentError)
+  end
+
+  it 'allows status 510' do
+    result = TestResult.new do |r|
+      r.status_code = 510
+      r.success = false
+    end
+    expect( result ).to be_an_instance_of(TestResult)
   end
 end
