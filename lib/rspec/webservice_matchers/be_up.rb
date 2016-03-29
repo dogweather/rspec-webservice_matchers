@@ -5,8 +5,8 @@ module RSpec
   module WebserviceMatchers
     module BeUp
       class TestResult
-        def success?
-        end
+        attr_reader :success
+        alias success? success
       end
 
       # Pass when the response code is 200, following redirects if necessary.
