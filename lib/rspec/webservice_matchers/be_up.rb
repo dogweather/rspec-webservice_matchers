@@ -16,6 +16,10 @@ module RSpec
       end
 
 
+      def self.check
+      end
+
+
       RSpec::Matchers.define :be_up do
         status = nil
 
