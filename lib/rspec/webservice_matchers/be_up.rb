@@ -5,10 +5,12 @@ require 'rspec/webservice_matchers/util'
 module RSpec
   module WebserviceMatchers
     module BeUp
+
       class TestResult
         attr_reader :success, :status_code
         alias success? success
       end
+
 
       RSpec::Matchers.define :be_up do
         status = nil
@@ -22,6 +24,7 @@ module RSpec
           "Received status #{status}"
         end
       end
+      
     end
   end
 end
