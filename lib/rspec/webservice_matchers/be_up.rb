@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require 'rspec/webservice_matchers/util'
 
+# Pass when the response code is 200, following redirects if necessary.
 module RSpec
   module WebserviceMatchers
     module BeUp
@@ -9,7 +10,6 @@ module RSpec
         alias success? success
       end
 
-      # Pass when the response code is 200, following redirects if necessary.
       RSpec::Matchers.define :be_up do
         status = nil
 
