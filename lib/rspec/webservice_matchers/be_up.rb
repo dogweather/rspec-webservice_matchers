@@ -11,8 +11,8 @@ module RSpec
         attr_accessor :success, :status_code
         alias success? success
 
-        validates :success, inclusion: [true, false]
-        validates :status_code, presence: true
+        validates :success,     inclusion: [true, false]
+        validates :status_code, type: Integer
       end
 
 
