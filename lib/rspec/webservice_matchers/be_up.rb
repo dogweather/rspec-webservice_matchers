@@ -4,6 +4,7 @@ require 'rspec/webservice_matchers/util'
 module RSpec
   module WebserviceMatchers
     module BeUp
+      
       class TestResult
         attr_reader :success
         alias success? success
