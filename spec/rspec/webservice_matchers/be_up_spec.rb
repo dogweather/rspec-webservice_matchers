@@ -5,11 +5,11 @@ require 'rspec/webservice_matchers/be_up'
 include RSpec::WebserviceMatchers::BeUp
 
 
-describe '#check' do
+describe '#test' do
   it 'handles a simple 200' do
-    result = BeUp.check('http://www.website.com/')
-    expect( result.success?    ).to be_true
-    expect( result.status_code ).to be 404
+    result = BeUp.test(url: 'http://www.website.com/')
+    expect( result.success?    ).to be true
+    expect( result.status_code ).to be 200
   end
 end
 

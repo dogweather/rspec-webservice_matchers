@@ -16,7 +16,11 @@ module RSpec
       end
 
 
-      def self.check
+      def self.test(url:)
+        TestResult.new do |r|
+          r.status_code = Util.status(url, follow: true)
+          r.success =     (r.status_code == 200)
+        end
       end
 
 
