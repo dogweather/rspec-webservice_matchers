@@ -1,3 +1,7 @@
+4.8.0
+-----
+Adds the new public API, beginning with the `be_up` matcher.
+
 4.7.0
 -----
 Reduced the RSpec dependencies to rspec-core and rspec-expectations.
