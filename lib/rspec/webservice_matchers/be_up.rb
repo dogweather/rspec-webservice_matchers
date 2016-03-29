@@ -12,7 +12,7 @@ module RSpec
         alias success? success
 
         validates :success,     inclusion: [true, false]
-        validates :status_code, inclusion: { in: (100..510) }
+        validates :status_code, inclusion: (100..510)
       end
 
 
