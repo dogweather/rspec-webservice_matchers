@@ -1,3 +1,7 @@
+4.7.0
+-----
+Reduced the RSpec dependencies to rspec-core and rspec-expectations.
+
 4.6.0
 -----
 Added `# frozen_string_literal: true` to all ruby files using `rubocop -a`,
