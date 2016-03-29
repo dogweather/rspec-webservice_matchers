@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'rspec/matchers'
 require 'rspec/webservice_matchers/util'
 require 'validated_object'
 
@@ -18,7 +19,7 @@ module RSpec
 
       def self.test(url:nil, domain:nil)
         raise 'Must specify a url or domain' if url.nil? && domain.nil?
-        
+
         TestResult.new do |r|
           r.status_code = Util.status(url || domain, follow: true)
           r.success =     (r.status_code == 200)
