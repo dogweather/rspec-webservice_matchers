@@ -24,4 +24,13 @@ describe TestResult do
     end
     expect( result ).to be_an_instance_of(TestResult)
   end
+
+  it 'requires boolean :success' do
+    expect {
+      TestResult.new do |r|
+        r.status_code = 200
+        r.success = 1
+      end
+    }.to raise_error(ArgumentError)
+  end
 end
