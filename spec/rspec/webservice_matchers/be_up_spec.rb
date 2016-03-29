@@ -42,4 +42,13 @@ describe TestResult do
       end
     }.to raise_error(ArgumentError)
   end
+
+  it 'cannot status be < 100' do
+    expect {
+      TestResult.new do |r|
+        r.status_code = -5
+        r.success = false
+      end
+    }.to raise_error(ArgumentError)
+  end
 end
