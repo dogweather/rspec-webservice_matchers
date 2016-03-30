@@ -2,9 +2,9 @@
 require 'spec_helper'
 require 'rspec/webservice_matchers/be_up'
 
-include RSpec::WebserviceMatchers::BeUp
+include RSpec::WebserviceMatchers
 
-describe RSpec::WebserviceMatchers::BeUp do
+describe BeUp do
   describe '#test' do
     it 'handles a simple 200' do
       result = BeUp.test url: 'http://www.website.com/'
@@ -26,30 +26,30 @@ describe RSpec::WebserviceMatchers::BeUp do
   end
 
 
-  describe TestResult do
+  describe BeUp::TestResult do
     it 'requires :success' do
       expect {
-        TestResult.new { |r| r.status_code = 200 }
+        BeUp::TestResult.new { |r| r.status_code = 200 }
       }.to raise_error(ArgumentError)
     end
 
     it 'requires :status_code' do
       expect {
-        TestResult.new { |r| r.success = true }
+        BeUp::TestResult.new { |r| r.success = true }
       }.to raise_error(ArgumentError)
     end
 
     it 'accepts boolean :success & integer :status_code' do
-      result = TestResult.new do |r|
+      result = BeUp::TestResult.new do |r|
         r.status_code = 404
         r.success = false
       end
-      expect( result ).to be_an_instance_of(TestResult)
+      expect( result ).to be_an_instance_of(BeUp::TestResult)
     end
 
     it 'requires boolean :success' do
       expect {
-        TestResult.new do |r|
+        BeUp::TestResult.new do |r|
           r.status_code = 200
           r.success = 1
         end
@@ -58,7 +58,7 @@ describe RSpec::WebserviceMatchers::BeUp do
 
     it 'requires integer :status_code' do
       expect {
-        TestResult.new do |r|
+        BeUp::TestResult.new do |r|
           r.status_code = '404'
           r.success = false
         end
@@ -67,7 +67,7 @@ describe RSpec::WebserviceMatchers::BeUp do
 
     it 'cannot have status < 100' do
       expect {
-        TestResult.new do |r|
+        BeUp::TestResult.new do |r|
           r.status_code = -5
           r.success = false
         end
@@ -76,7 +76,7 @@ describe RSpec::WebserviceMatchers::BeUp do
 
     it 'cannot have status > 510' do
       expect {
-        TestResult.new do |r|
+        BeUp::TestResult.new do |r|
           r.status_code = 511
           r.success = false
         end
@@ -84,11 +84,11 @@ describe RSpec::WebserviceMatchers::BeUp do
     end
 
     it 'allows status 510' do
-      result = TestResult.new do |r|
+      result = BeUp::TestResult.new do |r|
         r.status_code = 510
         r.success = false
       end
-      expect( result ).to be_an_instance_of(TestResult)
+      expect( result ).to be_an_instance_of(BeUp::TestResult)
     end
   end
 end

@@ -1,11 +1,23 @@
 # frozen_string_literal: true
 require 'cgi'
 require 'json'
+require 'rspec/matchers'
 require 'rspec/webservice_matchers/util'
+require 'validated_object'
 
 module RSpec
   module WebserviceMatchers
     module BeFast
+
+      class TestResult < ValidatedObject::Base
+        attr_accessor :success, :score
+        alias success? success
+
+        validates :success, inclusion: [true, false]
+        validates :score, inclusion: (0..100)
+      end
+
+
       def self.parse(json:)
         response = JSON.parse(json)
         unless response.key?('ruleGroups')
@@ -29,12 +41,21 @@ module RSpec
         BeFast.parse(json: response.body).fetch(:score)
       end
 
+      def self.test(url:)
+        TestResult.new do |r|
+          r.score   = BeFast.page_speed_score(url: url)
+          r.success = r.score >= 85
+        end
+      end
+
+
       RSpec::Matchers.define :be_fast do
         score = nil
 
         match do |url|
-          score = BeFast.page_speed_score(url: url)
-          score >= 85
+          result = BeFast.test(url: url)
+          score = result.score
+          result.success?
         end
 
         failure_message do

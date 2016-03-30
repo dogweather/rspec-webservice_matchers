@@ -1,3 +1,7 @@
+4.9.0
+-----
+Adds new API for `be_fast`.
+
 4.8.1
 -----
 Fixes require bug.
