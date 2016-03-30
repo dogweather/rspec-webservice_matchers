@@ -48,6 +48,7 @@ module RSpec
         end
       end
 
+
       RSpec::Matchers.define :be_fast do
         score = nil
 
