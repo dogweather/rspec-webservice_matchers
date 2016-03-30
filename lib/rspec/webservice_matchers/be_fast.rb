@@ -52,8 +52,9 @@ module RSpec
         score = nil
 
         match do |url|
-          score = BeFast.page_speed_score(url: url)
-          score >= 85
+          result = BeFast.test(url: url)
+          score = result.score
+          result.success?
         end
 
         failure_message do
