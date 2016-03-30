@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require 'cgi'
 require 'json'
+require 'rspec/matchers'
 require 'rspec/webservice_matchers/util'
 require 'validated_object'
 
@@ -25,6 +26,11 @@ module RSpec
         score = response.fetch('ruleGroups').fetch('SPEED').fetch('score')
         { score: score }
       end
+
+
+      def self.test(url:)
+      end
+
 
       def self.page_speed_score(url:)
         url_param = CGI.escape(Util.make_url(url))
