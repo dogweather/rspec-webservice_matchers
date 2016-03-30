@@ -1,3 +1,7 @@
+4.8.1
+-----
+Fixes require bug.
+
 4.8.0
 -----
 Adds the new public API, beginning with the `be_up` matcher.

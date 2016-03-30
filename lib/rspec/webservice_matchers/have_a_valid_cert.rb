@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 require 'rspec/webservice_matchers/util'
+require 'rspec/matchers'
 
 module RSpec
   module WebserviceMatchers
