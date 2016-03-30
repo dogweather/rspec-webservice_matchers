@@ -2,10 +2,20 @@
 require 'cgi'
 require 'json'
 require 'rspec/webservice_matchers/util'
+require 'validated_object'
 
 module RSpec
   module WebserviceMatchers
     module BeFast
+
+      class TestResult < ValidatedObject::Base
+        attr_accessor :success
+        alias success? success
+        
+        validates :success, inclusion: [true, false]
+      end
+
+
       def self.parse(json:)
         response = JSON.parse(json)
         unless response.key?('ruleGroups')
