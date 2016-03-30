@@ -20,9 +20,9 @@ describe BeFast do
 
   describe '#test' do
     it 'handles a fast site' do
-      result = RSpec::WebserviceMatchers::BeFast.test url: 'http://nonstop.qa'
-      expect( result.success?    ).to be true
-      expect( result.status_code ).to be_gt(84)
+      result = BeFast.test url: 'http://nonstop.qa'
+      expect( result.success? ).to be true
+      expect( result.score    ).to be >= 85
     end
   end
 end

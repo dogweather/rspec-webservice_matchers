@@ -27,11 +27,6 @@ module RSpec
         { score: score }
       end
 
-
-      def self.test(url:)
-      end
-
-
       def self.page_speed_score(url:)
         url_param = CGI.escape(Util.make_url(url))
         key       = ENV['WEBSERVICE_MATCHER_INSIGHTS_KEY']
@@ -44,6 +39,13 @@ module RSpec
         api_url   = "#{endpoint}?url=#{url_param}&screenshot=false&key=#{key}"
         response = Faraday.get(api_url)
         BeFast.parse(json: response.body).fetch(:score)
+      end
+
+      def self.test(url:)
+        TestResult.new do |r|
+          r.score   = BeFast.page_speed_score(url: url)
+          r.success = r.score >= 85
+        end
       end
 
       RSpec::Matchers.define :be_fast do
