@@ -11,6 +11,12 @@ describe RSpec::WebserviceMatchers::BeFast do
         TestResult.new {}
       }.to raise_error(ArgumentError, /success/i)
     end
+
+    it 'requires :score' do
+      expect {
+        TestResult.new { |r| r.success = true }
+      }.to raise_error(ArgumentError, /score/i)
+    end
   end
 
   # describe '#test' do

@@ -9,10 +9,11 @@ module RSpec
     module BeFast
 
       class TestResult < ValidatedObject::Base
-        attr_accessor :success
+        attr_accessor :success, :score
         alias success? success
-        
+
         validates :success, inclusion: [true, false]
+        validates :score, inclusion: (0..100)
       end
 
 
