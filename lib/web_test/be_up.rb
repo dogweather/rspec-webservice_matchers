@@ -18,7 +18,7 @@ module WebTest
 
       TestResult.new do |r|
         r.status_code = WebTest::Util.status(url || domain, follow: true)
-        r.success =     (r.status_code == 200)
+        r.success     = (r.status_code == 200)
       end
     end
   end
