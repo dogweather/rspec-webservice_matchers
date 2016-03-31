@@ -3,7 +3,8 @@
 
 require 'spec_helper'
 require 'rspec/webservice_matchers'
-require 'rspec/webservice_matchers/util'
+require 'web_test/util'
+
 
 SAMPLE_JSON_RESPONSE = 'spec/fixtures/pagespeed.json'
 

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require 'rspec/webservice_matchers/util'
+require 'web_test/util'
+
 
 module RSpec
   module WebserviceMatchers
@@ -10,7 +11,7 @@ module RSpec
         actual_code = nil
         
         match do |url_or_domain_name|
-          actual_code = Util.status(url_or_domain_name)
+          actual_code = WebTest::Util.status(url_or_domain_name)
           actual_code == expected_code.to_i
         end
         

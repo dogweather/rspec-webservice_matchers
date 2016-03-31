@@ -2,13 +2,12 @@
 require 'cgi'
 require 'json'
 require 'rspec/matchers'
-require 'rspec/webservice_matchers/util'
 require 'validated_object'
+require 'web_test/util'
 
 module RSpec
   module WebserviceMatchers
     module BeFast
-
       class TestResult < ValidatedObject::Base
         attr_accessor :success, :score
         alias success? success
@@ -28,7 +27,7 @@ module RSpec
       end
 
       def self.page_speed_score(url:)
-        url_param = CGI.escape(Util.make_url(url))
+        url_param = CGI.escape(WebTest::Util.make_url(url))
         key       = ENV['WEBSERVICE_MATCHER_INSIGHTS_KEY']
         if key.nil?
           raise 'be_fast requires the WEBSERVICE_MATCHER_INSIGHTS_KEY '\

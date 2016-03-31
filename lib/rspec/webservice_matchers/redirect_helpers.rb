@@ -1,11 +1,12 @@
 # frozen_string_literal: true
-require 'rspec/webservice_matchers/util'
+require 'web_test/util'
+
 
 module RSpec
   module WebserviceMatchers
     module RedirectHelpers
       def redirect_failure_message(exception, status, actual_location, kind)
-        return Util.error_message(exception) if exception
+        return WebTest::Util.error_message(exception) if exception
 
         errors = []
         if redirect? status
@@ -19,7 +20,7 @@ module RSpec
           errors << "not a redirect: received status #{status}"
         end
 
-        Util.error_message(errors)
+        WebTest::Util.error_message(errors)
       end
 
       def redirects_correctly?(status, actual_loc, expected_loc, kind)
@@ -27,7 +28,7 @@ module RSpec
       end
 
       def redirect_result(url_or_domain_name)
-        status, headers = Util.head(url_or_domain_name)
+        status, headers = WebTest::Util.head(url_or_domain_name)
         [status, headers['location']]
       end
 

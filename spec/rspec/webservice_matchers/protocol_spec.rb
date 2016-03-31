@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 require 'spec_helper'
 require 'rspec/webservice_matchers'
-require 'rspec/webservice_matchers/util'
+require 'web_test/util'
+
 
 describe 'be_status' do
   it 'can check 200 for successful resource requests' do
@@ -50,7 +51,7 @@ describe 'be_up' do
   end
 
   it 'is available via a public API' do
-    status = RSpec::WebserviceMatchers::Util.up?('http://www.website.com/')
+    status = WebTest::Util.up?('http://www.website.com/')
     expect(status).to be true
   end
 

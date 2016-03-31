@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 require 'rspec/matchers'
-require 'rspec/webservice_matchers/util'
+require 'web_test/util'
+
 require 'validated_object'
 
 # Pass when the response code is 200, following redirects if necessary.
 module RSpec
   module WebserviceMatchers
     module BeUp
-
       class TestResult < ValidatedObject::Base
         attr_accessor :success, :status_code
         alias success? success
@@ -21,7 +21,7 @@ module RSpec
         raise 'Must specify a url or domain' if url.nil? && domain.nil?
 
         TestResult.new do |r|
-          r.status_code = Util.status(url || domain, follow: true)
+          r.status_code = WebTest::Util.status(url || domain, follow: true)
           r.success =     (r.status_code == 200)
         end
       end
@@ -40,7 +40,6 @@ module RSpec
           "Received status #{status}"
         end
       end
-
     end
   end
 end

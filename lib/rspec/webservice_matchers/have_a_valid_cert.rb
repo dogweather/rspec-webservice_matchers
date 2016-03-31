@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require 'rspec/webservice_matchers/util'
+require 'web_test/util'
+
 require 'rspec/matchers'
 
 module RSpec
@@ -11,7 +12,7 @@ module RSpec
 
         match do |domain_name_or_url|
           begin
-            Util.try_ssl_connection(domain_name_or_url)
+            WebTest::Util.try_ssl_connection(domain_name_or_url)
           rescue Exception => e
             error_message = fix_for_excon_bug(e.message)
             false
