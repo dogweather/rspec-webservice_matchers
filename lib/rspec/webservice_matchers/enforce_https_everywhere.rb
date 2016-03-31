@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require 'faraday'
-require 'rspec/webservice_matchers/util'
+require 'web_test/util'
+
 require 'rspec/webservice_matchers/redirect_helpers'
 
 module RSpec
@@ -17,7 +18,7 @@ module RSpec
         match do |domain_name|
           begin
             status, new_url, final_protocol = get_info(domain_name)
-            meets_expectations?(status, final_protocol, Util.valid_cert?(new_url))
+            meets_expectations?(status, final_protocol, WebTest::Util.valid_cert?(new_url))
           rescue Faraday::Error::ConnectionFailed
             error_msg = 'Connection failed'
             false
@@ -25,7 +26,7 @@ module RSpec
         end
 
         def get_info(domain_name)
-          status, headers = Util.head(domain_name)
+          status, headers = WebTest::Util.head(domain_name)
           location = headers['location']
           /^(https?)/ =~ location
           protocol = Regexp.last_match(1) || nil
@@ -51,7 +52,7 @@ module RSpec
             errors << "destination uses protocol #{protocol.upcase}"
           end
           errors << "there's no valid SSL certificate" unless cert_is_valid
-          Util.error_message(errors)
+          WebTest::Util.error_message(errors)
         end
       end
     end

@@ -1,3 +1,7 @@
+4.10.0
+------
+Refactoring lower-level code into new namespace.
+
 4.9.0
 -----
 Adds new API for `be_fast`.

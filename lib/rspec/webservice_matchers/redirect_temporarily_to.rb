@@ -1,5 +1,6 @@
 # frozen_string_literal: true
-require 'rspec/webservice_matchers/util'
+require 'web_test/util'
+
 require 'rspec/webservice_matchers/redirect_helpers'
 
 module RSpec
