@@ -19,7 +19,7 @@ module WebTest
       response = page_speed_response(url: url)
 
       TestResult.new do |r|
-        r.score   = BeFast.score(response: response)
+        r.score   = score(response: response)
         r.success = r.score >= 85
       end
     end
@@ -38,7 +38,7 @@ module WebTest
     end
 
     def self.score(response:)
-      BeFast.parse(json: response.body).fetch(:score)
+      parse(json: response.body).fetch(:score)
     end
 
     def self.parse(json:)
