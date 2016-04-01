@@ -21,7 +21,7 @@ RSpec.configure do |config|
     WebMock.stub_request(:get,  'appengine.com').to_return(status: 200)
 
     # FUNCTIONING REDIRECTS
-    WebMock.stub_request(:head, 'http://perm-redirector.com/')
+    WebMock.stub_request(:head, 'perm-redirector.com')
            .to_return(status: 301,
                       body: '',
                       headers: { Location: 'http://www.website.com/' })
