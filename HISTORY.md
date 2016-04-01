@@ -1,3 +1,7 @@
+4.11.0
+------
+Adds the full PageSpeed result to the `BeFast::TestResult`.
+
 4.10.0
 ------
 Refactoring lower-level code into new namespace.
