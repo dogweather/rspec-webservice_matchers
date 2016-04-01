@@ -15,7 +15,7 @@ RSpec.describe WebTest::BeFast do
 
   describe '#parse' do
     it 'can parse the overall score' do
-      api_response = File.read(SAMPLE_JSON_RESPONSE)
+      api_response = File.read(SAMPLE_PAGESPEED_JSON_RESPONSE)
       data = WebTest::BeFast.parse json: api_response
       expect(data[:score]).to eq 85
     end
