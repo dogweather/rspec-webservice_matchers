@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 # Specs for all of the PageSpeed code and matchers.
-
 require 'spec_helper'
 require 'rspec/webservice_matchers'
 require 'web_test/util'
 
-
-SAMPLE_JSON_RESPONSE = 'spec/fixtures/pagespeed.json'
 
 describe RSpec::WebserviceMatchers::BeFast do
   describe '#be_fast' do

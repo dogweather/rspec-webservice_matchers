@@ -15,13 +15,11 @@ module WebTest
     end
 
 
-    def self.parse(json:)
-      response = JSON.parse(json)
-      unless response.key?('ruleGroups')
-        raise "Couldn't parse the PageSpeed response: #{response.inspect}"
+    def self.test(url:)
+      TestResult.new do |r|
+        r.score   = BeFast.page_speed_score(url: url)
+        r.success = r.score >= 85
       end
-      score = response.fetch('ruleGroups').fetch('SPEED').fetch('score')
-      { score: score }
     end
 
     def self.page_speed_score(url:)
@@ -38,11 +36,13 @@ module WebTest
       BeFast.parse(json: response.body).fetch(:score)
     end
 
-    def self.test(url:)
-      TestResult.new do |r|
-        r.score   = BeFast.page_speed_score(url: url)
-        r.success = r.score >= 85
+    def self.parse(json:)
+      response = JSON.parse(json)
+      unless response.key?('ruleGroups')
+        raise "Couldn't parse the PageSpeed response: #{response.inspect}"
       end
+      score = response.fetch('ruleGroups').fetch('SPEED').fetch('score')
+      { score: score }
     end
   end
 end

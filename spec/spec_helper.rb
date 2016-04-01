@@ -69,3 +69,5 @@ module RSpec
     end
   end
 end
+
+SAMPLE_JSON_RESPONSE = 'spec/fixtures/pagespeed.json'

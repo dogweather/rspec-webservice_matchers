@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+require 'spec_helper'
 require 'web_test/be_fast'
 
 RSpec.describe WebTest::BeFast do
