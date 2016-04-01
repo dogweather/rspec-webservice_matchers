@@ -64,8 +64,4 @@ describe 'be_up' do
   it 'succeeds even if the site times out on the first try' do
     expect('http://www.timeout-once.com').to be_up
   end
-
-  it 'works on cars.com' do
-    expect('http://cars.com').to be_up
-  end
 end
