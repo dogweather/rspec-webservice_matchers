@@ -10,7 +10,8 @@ RSpec.configure do |config|
     WebMock.stub_request(:any, 'not-a-domain.com')
            .to_raise(Faraday::ConnectionFailed.new('Failed to open TCP ' \
                      'connection to asdhfjkahsdfadfd.com:80 ' \
-                     '(getaddrinfo: nodename nor servname provided, or not known)'))
+                     '(getaddrinfo: nodename nor servname provided, ' \
+                     'or not known)'))
 
     # FUNCTIONING WEB PAGES
     WebMock.stub_request :any, 'http://a-page.com/a/page.txt'
