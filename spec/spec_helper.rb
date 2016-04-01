@@ -18,11 +18,10 @@ RSpec.configure do
   WebMock.stub_request(:get,  'appengine.com').to_return(status: 200)
 
   # WORKING REDIRECTS
-  # WebMock.stub_request(:any, 'perm-redirector.com')
-  #        .to_return(status: 301, headers: { Location: 'http://www.website.com/' })
-  WebMock.stub_request(:head, "http://perm-redirector.com/").
-    with(:headers => {'Accept'=>'*/*', 'User-Agent'=>'Faraday v0.9.2'}).
-    to_return(:status => 301, :body => "", :headers => {Location: 'http://www.website.com/'})
+  WebMock.stub_request(:head, 'http://perm-redirector.com/')
+         .to_return(status: 301,
+                    body: '',
+                    headers: { Location: 'http://www.website.com/' })
 
   WebMock.stub_request(:any, 'temp-redirector.org')
          .to_return(status: 302, headers: { Location: 'http://a-page.com/a/page.txt' })
