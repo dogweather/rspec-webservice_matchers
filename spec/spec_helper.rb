@@ -49,8 +49,6 @@ RSpec.configure do |config|
              status: 200,
              body: IO.read('spec/fixtures/pagespeed.json'),
              headers: {})
-
-    # WebMock.allow_net_connect!
   end
 end
 
