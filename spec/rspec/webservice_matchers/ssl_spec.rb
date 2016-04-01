@@ -2,7 +2,12 @@
 require 'spec_helper'
 require 'rspec/webservice_matchers'
 
+describe 'SSL tests' do
+  before(:each) { WebMock.allow_net_connect! }
+  after(:each)  { WebMock.disable_net_connect! }
+
 describe 'have_a_valid_cert matcher' do
+
   it 'passes when SSL is properly configured' do
     # EFF created the HTTPS Everywhere movement
     # TODO: set up a test server for this. (?)
@@ -59,4 +64,5 @@ describe 'enforce_https_everywhere' do
       expect('asdhfjkalsdhfjklasdfhjkasdhfl.com').to enforce_https_everywhere
     }.to fail_matching(/connection failed/i)
   end
+end
 end

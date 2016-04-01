@@ -37,7 +37,7 @@ RSpec.configure do |config|
     WebMock.stub_request(:any, 'www.timeout-once.com').to_timeout
            .then.to_return(body: 'abc')
 
-    # Insights API
+    # PageSpeed Insights API
     key = ENV['WEBSERVICE_MATCHER_INSIGHTS_KEY']
     WebMock.stub_request(:get, "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?key=#{key}&screenshot=false&url=http://nonstop.qa")
            .with(headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Faraday v0.9.2' })
