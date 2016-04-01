@@ -35,7 +35,7 @@ describe 'redirect_permanently_to' do
 
   it 'gives a good error message when the hostname is bad' do
     expect {
-      expect('asdhfjadhsfksd.com').to redirect_permanently_to 'http://the-wrong-site.com/'
+      expect('not-a-domain.com').to redirect_permanently_to 'http://the-wrong-site.com/'
     }.to fail_matching(/not known/i)
   end
 end
@@ -73,7 +73,7 @@ describe 'redirect_temporarily_to' do
 
   it 'gives a good error message when the hostname is bad' do
     expect {
-      expect('234678234687234.com').to redirect_temporarily_to 'www.nowhere.com'
+      expect('not-a-domain.com').to redirect_temporarily_to 'www.nowhere.com'
     }.to fail_matching(/not known/i)
   end
 end
