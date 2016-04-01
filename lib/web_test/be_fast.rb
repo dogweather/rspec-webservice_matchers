@@ -16,15 +16,15 @@ module WebTest
 
 
     def self.test(url:)
-      response = page_speed_response(url: url)
+      response = page_speed(url: url)
 
       TestResult.new do |r|
-        r.score   = score(response: response)
+        r.score   = response.fetch(:score)
         r.success = r.score >= 85
       end
     end
 
-    def self.page_speed_response(url:)
+    def self.page_speed(url:)
       url_param = CGI.escape(WebTest::Util.make_url(url))
       key       = ENV['WEBSERVICE_MATCHER_INSIGHTS_KEY']
       if key.nil?
@@ -34,23 +34,19 @@ module WebTest
       end
       endpoint  = 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed'
       api_url   = "#{endpoint}?url=#{url_param}&screenshot=false&key=#{key}"
-      Faraday.get(api_url)
-    end
-
-    def self.score(response:)
-      parse(json: response.body).fetch(:score)
+      parse json: Faraday.get(api_url).body
     end
 
     def self.parse(json:)
-      response = JSON.parse(json)
+      raw_response = JSON.parse(json)
       # require('pry'); binding.pry
-      unless response.key?('ruleGroups')
-        raise "Couldn't parse the PageSpeed response: #{response.inspect}"
+      unless raw_response.key?('ruleGroups')
+        raise "Couldn't parse the PageSpeed raw_response: #{raw_response.inspect}"
       end
-      score = response.fetch('ruleGroups').fetch('SPEED').fetch('score')
+      score = raw_response.fetch('ruleGroups').fetch('SPEED').fetch('score')
       {
         score: score,
-        raw_response: response
+        raw_response: raw_response
       }
     end
   end
