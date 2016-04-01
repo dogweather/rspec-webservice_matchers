@@ -2,7 +2,8 @@
 require 'faraday'
 require 'webmock/rspec'
 
-RSpec.configure do
+RSpec.configure do |config|
+  config.before(:each) do
   # HOSTS WHICH RETURN ERRORS
   WebMock.stub_request(:any, /notfound.com/).to_return(status: 404)
   WebMock.stub_request(:any, 'outoforder.com').to_return(status: 503)
@@ -43,6 +44,7 @@ RSpec.configure do
            headers: {})
 
   # WebMock.allow_net_connect!
+end
 end
 
 module RSpec
