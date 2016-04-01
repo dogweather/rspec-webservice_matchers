@@ -33,5 +33,14 @@ RSpec.describe WebTest::BeFast do
         WebTest::BeFast::TestResult.new { |r| r.success = true }
       end.to raise_error(ArgumentError, /score/i)
     end
+
+    it 'requires :response' do
+      expect do
+        WebTest::BeFast::TestResult.new { |r|
+          r.success = true
+          r.score = 90
+        }
+      end.to raise_error(ArgumentError, /response/i)      
+    end
   end
 end

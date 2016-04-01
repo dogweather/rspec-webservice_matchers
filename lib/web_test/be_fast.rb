@@ -4,14 +4,20 @@ require 'json'
 require 'validated_object'
 require 'web_test/util'
 
+#
+# Runs PageSpeed on a URL.
+# See https://developers.google.com/speed/docs/insights/v2/reference/pagespeedapi/runpagespeed#response
+#
 module WebTest
   module BeFast
+
     class TestResult < ValidatedObject::Base
-      attr_accessor :success, :score
+      attr_accessor :success, :score, :response
       alias success? success
 
-      validates :success, inclusion: [true, false]
-      validates :score,   inclusion: 0..100
+      validates :success,  inclusion: [true, false]
+      validates :score,    inclusion: 0..100
+      validates :response, type: Hash
     end
 
 
@@ -19,8 +25,9 @@ module WebTest
       response = page_speed(url: url)
 
       TestResult.new do |r|
-        r.score   = response.fetch(:score)
-        r.success = r.score >= 85
+        r.score    = response.fetch(:score)
+        r.success  = r.score >= 85
+        r.response = response
       end
     end
 
@@ -39,7 +46,6 @@ module WebTest
 
     def self.parse(json:)
       raw_response = JSON.parse(json)
-      # require('pry'); binding.pry
       unless raw_response.key?('ruleGroups')
         raise "Couldn't parse the PageSpeed raw_response: #{raw_response.inspect}"
       end
