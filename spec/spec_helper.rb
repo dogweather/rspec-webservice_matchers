@@ -8,7 +8,9 @@ RSpec.configure do |config|
     WebMock.stub_request(:any, /notfound.com/).to_return(status: 404)
     WebMock.stub_request(:any, 'outoforder.com').to_return(status: 503)
     WebMock.stub_request(:any, 'not-a-domain.com')
-           .to_raise(Faraday::ConnectionFailed.new('Failed to open TCP connection to asdhfjkahsdfadfd.com:80 (getaddrinfo: nodename nor servname provided, or not known)'))
+           .to_raise(Faraday::ConnectionFailed.new('Failed to open TCP ' \
+                     'connection to asdhfjkahsdfadfd.com:80 ' \
+                     '(getaddrinfo: nodename nor servname provided, or not known)'))
 
     # FUNCTIONING WEB PAGES
     WebMock.stub_request :any, 'http://a-page.com/a/page.txt'
@@ -39,8 +41,10 @@ RSpec.configure do |config|
 
     # PageSpeed Insights API
     key = ENV['WEBSERVICE_MATCHER_INSIGHTS_KEY']
-    WebMock.stub_request(:get, "https://www.googleapis.com/pagespeedonline/v2/runPagespeed?key=#{key}&screenshot=false&url=http://nonstop.qa")
-           .with(headers: { 'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'User-Agent' => 'Faraday v0.9.2' })
+    WebMock.stub_request(:get,
+                         'https://www.googleapis.com/pagespeedonline/v2/' \
+                         "runPagespeed?key=#{key}&screenshot=false" \
+                         '&url=http://nonstop.qa')
            .to_return(
              status: 200,
              body: IO.read('spec/fixtures/pagespeed.json'),
