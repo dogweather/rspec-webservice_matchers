@@ -15,7 +15,7 @@ module WebTest
       attr_accessor :success, :score, :response
       alias success? success
 
-      validates :success,  inclusion: [true, false]
+      validates :success,  type: Boolean
       validates :score,    inclusion: 0..100
       validates :response, type: Hash
     end

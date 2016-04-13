@@ -1,3 +1,7 @@
+4.12.0
+------
+Refactoring
+
 4.11.0
 ------
 Adds the full PageSpeed result to the `BeFast::TestResult`.
