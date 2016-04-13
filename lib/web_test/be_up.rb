@@ -8,7 +8,7 @@ module WebTest
       attr_accessor :success, :status_code
       alias success? success
 
-      validates :success,     inclusion: [true, false]
+      validates :success,     type: Boolean
       validates :status_code, inclusion: 100..510
     end
 

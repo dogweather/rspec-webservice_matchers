@@ -1,3 +1,8 @@
+4.12.0
+------
+Refactoring.
+Change the Be fast test result for response to be the raw response.
+
 4.11.0
 ------
 Adds the full PageSpeed result to the `BeFast::TestResult`.
