@@ -1,6 +1,7 @@
 4.12.0
 ------
-Refactoring
+Refactoring.
+Change the Be fast test result for response to be the raw response.
 
 4.11.0
 ------

@@ -27,7 +27,7 @@ module WebTest
       TestResult.new do |r|
         r.score    = response.fetch(:score)
         r.success  = r.score >= 85
-        r.response = response
+        r.response = response[:raw_response]
       end
     end
 
