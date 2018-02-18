@@ -80,6 +80,14 @@ module WebTest
       end
     end
 
+    def self.make_domain_name(url_or_domain_name)
+      if %r{^https?://(.+)} =~ url_or_domain_name
+        $1
+      else
+        url_or_domain_name
+      end
+    end
+
     # Normalize the input: remove 'http(s)://' if it's there
     def self.remove_protocol(domain_name_or_url)
       %r{^https?://(?<name>.+)$} =~ domain_name_or_url
