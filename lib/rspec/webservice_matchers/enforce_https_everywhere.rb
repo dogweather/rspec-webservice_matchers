@@ -15,9 +15,9 @@ module RSpec
         include RedirectHelpers
         error_msg = status = final_protocol = has_valid_cert = nil
 
-        match do |domain_name|
+        match do |domain_name_or_url|
           begin
-            status, new_url, final_protocol = get_info(domain_name)
+            status, new_url, final_protocol = get_info(WebTest::Util.make_domain_name(domain_name_or_url))
             meets_expectations?(status, final_protocol, WebTest::Util.valid_cert?(new_url))
           rescue Faraday::Error::ConnectionFailed
             error_msg = 'Connection failed'

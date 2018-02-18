@@ -80,6 +80,16 @@ module WebTest
       end
     end
 
+    # Return just the domain name portion of a URL if 
+    # it's simply of the form http://name.tld
+    def self.make_domain_name(url_or_domain_name)
+      if %r{^https?://(.+)} =~ url_or_domain_name
+        $1
+      else
+        url_or_domain_name
+      end
+    end
+
     # Normalize the input: remove 'http(s)://' if it's there
     def self.remove_protocol(domain_name_or_url)
       %r{^https?://(?<name>.+)$} =~ domain_name_or_url
