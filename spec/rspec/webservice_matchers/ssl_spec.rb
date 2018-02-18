@@ -61,12 +61,23 @@ describe 'SSL tests' do
     end
       
 
-    it 'provides a relevant error message' do
+    it 'provides a relevant error code' do
       expect do
         expect('www.psu.edu').to enforce_https_everywhere
       end.to fail_matching(/200/)
     end
 
+    it 'provides a relevant error code with https url' do
+      expect do
+        expect('https://www.psu.edu').to enforce_https_everywhere
+      end.to fail_matching(/200/)
+    end
+
+    it 'provides a relevant error code with http url' do
+      expect do
+        expect('http://www.psu.edu').to enforce_https_everywhere
+      end.to fail_matching(/200/)
+    end
     # it "provides a relevant error message when the domain name doesn't exist" do
     #   expect do
     #     expect('asdhfjkalsdhfjklasdfhjkasdhfl.com').to enforce_https_everywhere
