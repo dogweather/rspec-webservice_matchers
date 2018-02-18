@@ -80,6 +80,8 @@ module WebTest
       end
     end
 
+    # Return just the domain name portion of a URL if 
+    # it's simply of the form http://name.tld
     def self.make_domain_name(url_or_domain_name)
       if %r{^https?://(.+)} =~ url_or_domain_name
         $1
