@@ -9,7 +9,7 @@ A [gem](https://rubygems.org/gems/rspec-webservice_matchers) to black-box test a
 expect('github.com').to have_a_valid_cert
 ```
 
-It's a tool for doing **Test Driven Devops** (I just made that up). See [my introductory blog post](http://robb.weblaws.org/2014/01/16/new-open-source-library-for-test-driven-devops/) for the backstory.
+It's a tool for doing **Test Driven Devops** (I just made that up). See [my introductory blog post](https://dogsnog.blog/2014/01/16/new-open-source-library-for-test-driven-devops/) for the backstory.
 
 This library takes a minimalist approach: it simply adds new RSpec matchers. Therefore, you can use your own RSpec writing style; there's no new DSL to learn.
 
