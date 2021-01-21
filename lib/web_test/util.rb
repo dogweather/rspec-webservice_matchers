@@ -98,7 +98,7 @@ module WebTest
 
     def self.recheck_on_timeout
       yield
-    rescue Faraday::Error::TimeoutError
+    rescue Faraday::TimeoutError
       yield
     end
   end
