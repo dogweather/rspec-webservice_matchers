@@ -23,7 +23,7 @@ describe 'SSL tests' do
     it 'provides a relevant error message' do
       expect do
         expect('neverssl.com').to have_a_valid_cert
-      end.to fail_matching(/(unreachable)|(no route to host)|(connection refused)/i)
+      end.to fail_matching(/(unreachable)|(no route to host)|(connection refused)|(redirect was detected)/i)
     end
 
     xit "provides a relevant error message when the domain name doesn't exist" do
