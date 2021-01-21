@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require 'spec_helper'
 require 'rspec/webservice_matchers'
 
@@ -15,13 +16,13 @@ describe 'SSL tests' do
 
     it 'fails if the server is not serving SSL at all' do
       expect do
-        expect('www.psu.edu').to have_a_valid_cert
-      end.to fail_matching(/443/)
+        expect('neverssl.com').to have_a_valid_cert
+      end.to fail_matching(/Unable to verify/)
     end
 
     it 'provides a relevant error message' do
       expect do
-        expect('www.psu.edu').to have_a_valid_cert
+        expect('neverssl.com').to have_a_valid_cert
       end.to fail_matching(/(unreachable)|(no route to host)|(connection refused)/i)
     end
 
@@ -59,23 +60,22 @@ describe 'SSL tests' do
     it 'passes when given an http url' do
       expect('http://www.eff.org').to enforce_https_everywhere
     end
-      
 
     it 'provides a relevant error code' do
       expect do
-        expect('www.psu.edu').to enforce_https_everywhere
+        expect('neverssl.com').to enforce_https_everywhere
       end.to fail_matching(/200/)
     end
 
     it 'provides a relevant error code with https url' do
       expect do
-        expect('https://www.psu.edu').to enforce_https_everywhere
+        expect('https://neverssl.com').to enforce_https_everywhere
       end.to fail_matching(/200/)
     end
 
     it 'provides a relevant error code with http url' do
       expect do
-        expect('http://www.psu.edu').to enforce_https_everywhere
+        expect('http://neverssl.com').to enforce_https_everywhere
       end.to fail_matching(/200/)
     end
     # it "provides a relevant error message when the domain name doesn't exist" do
