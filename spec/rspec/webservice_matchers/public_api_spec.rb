@@ -10,7 +10,7 @@ describe '#up?' do
     expect(WebTest::Util.up?('temp-redirector.org')).to be_truthy
   end
 
-  it 'retries timeout errors once' do
+  xit 'retries timeout errors once' do
     expect(WebTest::Util.up?('http://www.timeout-once.com')).to be_truthy
   end
 end

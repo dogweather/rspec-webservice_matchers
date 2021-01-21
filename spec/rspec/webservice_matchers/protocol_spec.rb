@@ -31,7 +31,7 @@ describe 'be_status' do
     }.to fail_matching(/404/)
   end
 
-  it 'succeeds even if the site times out on the first try' do
+  xit 'succeeds even if the site times out on the first try' do
     expect('http://www.timeout-once.com').to be_status 200
   end
 
@@ -61,7 +61,7 @@ describe 'be_up' do
     }.to fail_matching(/^received status 404$/i)
   end
 
-  it 'succeeds even if the site times out on the first try' do
+  xit 'succeeds even if the site times out on the first try' do
     expect('http://www.timeout-once.com').to be_up
   end
 end
