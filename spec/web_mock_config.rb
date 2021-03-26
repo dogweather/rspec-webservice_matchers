@@ -43,9 +43,9 @@ RSpec.configure do |config|
     # PageSpeed Insights API
     key = ENV['WEBSERVICE_MATCHER_INSIGHTS_KEY']
     WebMock.stub_request(:get,
-                         'https://www.googleapis.com/pagespeedonline/v2/' \
+                         'https://www.googleapis.com/pagespeedonline/v5/' \
                          "runPagespeed?key=#{key}&screenshot=false" \
-                         '&url=http://nonstop.qa')
+                         '&url=https://constant.qa')
            .to_return(
              status: 200,
              body: IO.read('spec/fixtures/pagespeed.json'),

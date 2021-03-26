@@ -39,19 +39,20 @@ module WebTest
               'environment variable to be set to a Google PageSpeed '\
               'Insights API key.'
       end
-      endpoint  = 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed'
+      endpoint  = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed'
       api_url   = "#{endpoint}?url=#{url_param}&screenshot=false&key=#{key}"
       parse json: Faraday.get(api_url).body
     end
 
     def self.parse(json:)
       raw_response = JSON.parse(json)
-      unless raw_response.key?('ruleGroups')
+      unless raw_response.key?('lighthouseResult')
         raise "Couldn't parse the PageSpeed raw_response: #{raw_response.inspect}"
       end
-      score = raw_response.fetch('ruleGroups').fetch('SPEED').fetch('score')
+      score = raw_response.fetch('lighthouseResult').fetch('categories').fetch('performance').fetch('score')
+
       {
-        score: score,
+        score: Integer(score * 100),
         raw_response: raw_response
       }
     end
