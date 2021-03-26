@@ -46,12 +46,13 @@ module WebTest
 
     def self.parse(json:)
       raw_response = JSON.parse(json)
-      unless raw_response.key?('ruleGroups')
+      unless raw_response.key?('lighthouseResult')
         raise "Couldn't parse the PageSpeed raw_response: #{raw_response.inspect}"
       end
-      score = raw_response.fetch('ruleGroups').fetch('SPEED').fetch('score')
+      score = raw_response.fetch('lighthouseResult').fetch('categories').fetch('performance').fetch('score')
+
       {
-        score: score,
+        score: Integer(score * 100),
         raw_response: raw_response
       }
     end
