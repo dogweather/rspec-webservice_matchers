@@ -7,7 +7,7 @@ RSpec.describe WebTest::BeFast do
 
   describe '#test' do
     it 'handles a fast site' do
-      result = WebTest::BeFast.test url: 'http://nonstop.qa'
+      result = WebTest::BeFast.test url: 'https://constant.qa'
       expect(result.success?).to be true
       expect(result.score).to be >= 85
     end

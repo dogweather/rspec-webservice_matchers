@@ -39,7 +39,7 @@ module WebTest
               'environment variable to be set to a Google PageSpeed '\
               'Insights API key.'
       end
-      endpoint  = 'https://www.googleapis.com/pagespeedonline/v2/runPagespeed'
+      endpoint  = 'https://www.googleapis.com/pagespeedonline/v5/runPagespeed'
       api_url   = "#{endpoint}?url=#{url_param}&screenshot=false&key=#{key}"
       parse json: Faraday.get(api_url).body
     end
