@@ -1,6 +1,6 @@
 # RSpec::WebserviceMatchers
 
-[![Maintainability](https://api.codeclimate.com/v1/badges/501f791f1ea83905e992/maintainability)](https://codeclimate.com/github/dogweather/rspec-webservice_matchers/maintainability) [![Gem Version](https://badge.fury.io/rb/rspec-webservice_matchers.svg)](https://badge.fury.io/rb/rspec-webservice_matchers)
+[![Gem Version](https://badge.fury.io/rb/rspec-webservice_matchers.svg)](https://badge.fury.io/rb/rspec-webservice_matchers)
 
 A [gem](https://rubygems.org/gems/rspec-webservice_matchers) to black-box test a web server configuration. For example, whether a site's SSL certificate is correctly configured and not expired:
 
