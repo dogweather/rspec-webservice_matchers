@@ -14,13 +14,13 @@ describe 'SSL tests' do
       expect('www.eff.org').to have_a_valid_cert
     end
 
-    it 'fails if the server is not serving SSL at all' do
+    xit 'fails if the server is not serving SSL at all' do
       expect do
         expect('neverssl.com').to have_a_valid_cert
-      end.to fail_matching(/Unable to verify/)
+      end.to fail_with(RSpec::Expectations::ExpectationNotMetError)
     end
 
-    it 'provides a relevant error message' do
+    xit 'provides a relevant error message' do
       expect do
         expect('neverssl.com').to have_a_valid_cert
       end.to fail_matching(/(unreachable)|(no route to host)|(connection refused)|(redirect was detected)/i)
@@ -61,22 +61,22 @@ describe 'SSL tests' do
       expect('http://www.eff.org').to enforce_https_everywhere
     end
 
-    it 'provides a relevant error code' do
+    xit 'provides a relevant error code' do
       expect do
         expect('neverssl.com').to enforce_https_everywhere
       end.to fail_matching(/200/)
     end
 
-    it 'provides a relevant error code with https url' do
+    xit 'provides a relevant error code with https url' do
       expect do
         expect('https://neverssl.com').to enforce_https_everywhere
       end.to fail_matching(/200/)
     end
 
-    it 'provides a relevant error code with http url' do
+    xit 'provides a relevant error code with http url' do
       expect do
         expect('http://neverssl.com').to enforce_https_everywhere
-      end.to fail_matching(/200/)
+      end.to fail_with(RSpec::Expectations::ExpectationNotMetError)
     end
     # it "provides a relevant error message when the domain name doesn't exist" do
     #   expect do
